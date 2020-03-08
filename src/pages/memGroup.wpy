@@ -1,0 +1,94 @@
+<style lang="scss">
+page{
+    width: 100%;
+    height: 100%;
+}
+.group{
+    background-color: #ededed;
+    padding: 30rpx;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .group-item{
+        background-color: #fdfdfe;
+        padding: 20rpx;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 20rpx;
+        .image-wrapper{
+            width: 120rpx;
+            height: 120rpx;
+            border-radius: 50%;
+            border: 1px solid #000;
+            image{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .item-desc{
+            margin-left: 30rpx;
+            display: flex;
+            flex-direction: column;
+            text{
+                font-size: 32rpx;
+            }
+        }
+    }
+}
+</style>
+
+<template>
+<view class="group">
+    <repeat wx:for="{{groupList}}" wx:key="index" index="index" item="item">
+        <view class="group-item">
+            <view class="image-wrapper">
+                <image src="{{item.portrait}}"></image>
+            </view>
+            <view class="item-desc">
+                <text class="item-name">昵称： {{item.userName}}</text>
+                <text class="item-id">ID： {{item.parentId}}</text>
+                <text class="item-time">加入时间： {{item.createTime}}</text>
+            </view>
+        </view>
+    </repeat>
+
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '我的团队'
+    }
+    data= {
+      groupList: []
+    }
+    onLoad() {
+      var that = this
+      wx.getStorage({
+        key: 'session-id',
+        success: response => {
+          wx.request({
+            url: BASEURL + '/dengtao/api/myTeam/getMyTeam',
+            header: { 'Cookie': 'JSESSIONID=' + response.data },
+            success: function (res) {
+              console.log('获取到我的团队信息')
+              console.table(res.data.data)
+              that.setData({
+                groupList: res.data.data.userVOS
+              })
+              that.groupList = res.data.data.userVOS
+            }
+          })
+        }
+      })
+    }
+  }
+</script>

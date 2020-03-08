@@ -1,0 +1,688 @@
+<style lang="scss">
+.product-detail{
+    margin-bottom: 150rpx;
+    background-color: #FFFFFF;
+}
+.name-price-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 40rpx 40rpx 0 40rpx;
+    box-sizing: border-box;
+    justify-content: space-between;
+    .name-price{
+        .product-name{
+            font-size: 34rpx;
+            margin-bottom: 20rpx;
+            font-weight: bold;
+            color: #1A1A1A;
+            overflow:hidden;//一定要写
+            text-overflow: ellipsis;//超出省略号
+            display:-webkit-box;//一定要写
+            -webkit-line-clamp: 2;//控制行数
+            -webkit-box-orient: vertical;//一定要写
+
+        }
+        .product-price{
+            color: red;
+            font-size: 32rpx;
+            font-weight: bolder;
+            display: flex;
+            /*display: flex;*/
+            align-items: center;
+            .realPrice{
+                font-size: 46rpx;
+            }
+            .originPrice{
+                color: #ccc;
+                text-decoration: line-through;
+                margin-left: 20rpx;
+            }
+        }
+    }
+    .share-wrapper{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 60rpx;
+        .share-icon{
+            align-items: center;
+            font-size: 42rpx;
+            text-align: center;
+            image{
+                width: 60rpx;
+                height: 60rpx;
+            }
+        }
+        .share-title{
+            font-size: 30rpx;
+            color: #333333;
+        }
+        button{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            &::after{
+                content: '';
+                border: none;
+            }
+        }
+    }
+
+}
+.btn-wrapper{
+    margin-top: 10rpx;
+    width: 100%;
+    .btn{
+        width: 100%;
+        background-color: #ff3e08;
+        color: white;
+        font-size: 34rpx;
+        line-height: 80 rpx;
+        display: inline-block;
+    }
+}
+.product-info{
+    width: 100%;
+    padding: 30rpx;
+    box-sizing: border-box;
+    .sale-amount-wrapper{
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 30rpx;
+        color: #414141;
+        border-top: 2rpx solid #ddd;
+        /*border-bottom: 2rpx solid #ddd;*/
+        padding: 15rpx 0;
+
+        .wrapper-item{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            image{
+                width: 50rpx;
+                height: 50rpx;
+                margin-right: 10rpx;
+            }
+        }
+
+    }
+}
+.product-detail-title{
+    color: #333;
+    font-weight: bold;
+    position: relative;
+    margin-left: 25rpx;
+    &::before{
+        content: '';
+        border: 3px solid red;
+        position: absolute;
+        left: -25rpx;
+        top: 0;
+        height: 80%;
+
+    }
+}
+.product-detail-image{
+    margin-top: 30rpx;
+    padding: 0rpx 10rpx;
+    box-sizing: border-box;
+    height: auto;
+    image{
+        width: 100%;
+        /*height: 100%;*/
+        vertical-align: top;
+    }
+}
+.footer-icon{
+    height: 100 rpx;
+    width: 100%;
+    margin-top: 30rpx;
+    image{
+        height: 100rpx;
+        min-height: 100%;
+        /*width: 100%;*/
+    }
+}
+ .alredyCollected{
+     color: orangered;
+     background-color: orangered;
+ }
+.van-popup{
+    background-color:transparent!important;
+}
+.popup{
+    width: 100%;
+    height: 700rpx;
+    background-color: transparent;
+    border-top: transparent;
+    box-sizing: border-box;
+    .blank-content{
+        /*background-color: blue;*/
+        width: 100%;
+        height: 20%;
+    }
+    .product-spec{
+        background-color: #fff;
+        /*margin-top: 20%;*/
+        width: 100%;
+        height: 80%;
+        /*background-color: blue;*/
+        position: relative;
+        .img-wrapper{
+            position: absolute;
+            width: 200rpx;
+            height: 200rpx;
+            left: 20rpx;
+            top:  -50rpx;
+            box-shadow: 1px 1px 1px #888888;
+            image{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .spec-detail{
+            display: flex;
+            flex-direction: column;
+            margin-left: 250rpx;
+            /*margin-top: 30rpx;*/
+            padding: 30rpx 0 0 0;
+            box-sizing: border-box;
+            .spec-price{
+                color: #d4352c;
+                font-size: 38rpx;
+                font-weight: bolder;
+            }
+            .spec-name{
+                margin-top: 25rpx;
+                font-size: 28rpx;
+                color: #ccc;
+                span{
+                    color: black;
+                }
+            }
+        }
+        .spec-list-wrapper{
+            margin-top: 30rpx;
+            /*background-color: red;*/
+            padding: 20rpx;
+            box-sizing: border-box;
+            .list-title{
+                font-size: 30rpx;
+                color: #ccc;
+            }
+            .spec-list{
+                scroll-view{
+                    display: flex;
+                }
+            }
+        }
+        .spec-btn{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f50800;
+            flex: 1;
+            text-align: center;
+            padding: 20rpx;
+            color: white;
+            font-size: 34rpx;
+
+        }
+    }
+}
+.scroll-view-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .scroll-view-item{
+        font-size: 30rpx;
+        background-color: #f6f6f6;
+        padding: 10rpx 20rpx;
+        box-sizing: border-box;
+        margin-left: 20rpx;
+        margin-top: 20rpx;
+        border-radius: 5rpx;
+    }
+    .scroll-view-item-active{
+        font-size: 30rpx;
+        background-color: #c44e41;
+        color: white;
+        padding: 10rpx 20rpx;
+        box-sizing: border-box;
+        margin-left: 20rpx;
+        margin-top: 20rpx;
+        border-radius: 5rpx;
+    }
+}
+.van-cell__value{
+    overflow:hidden;//一定要写
+    text-overflow: ellipsis;//超出省略号
+    display:-webkit-box;//一定要写
+    -webkit-line-clamp: 1;//控制行数
+    -webkit-box-orient: vertical;//一定要写
+}
+</style>
+
+<template>
+        <view class="product-detail">
+            <view class="page-section page-section-spacing swiper" style="height:700rpx">
+                <swiper indicator-dots="{{indicatorDots}}"
+                        autoplay="{{true}}" interval="{{2000}}" duration="{{duration}}" style="height:700rpx">
+                    <block wx:for="{{productImg}}" wx:key="*this" style="height:700rpx" wx:key="index" index="index">
+                        <swiper-item @tap="previewImg({{index}})">
+                            <image src="{{item}}" style="height:100%;width:100%"></image>
+                        </swiper-item>
+                    </block>
+                </swiper>
+            </view>
+            <view class="name-price-wrapper">
+                <view class="name-price">
+                    <view class="product-name">{{productInfo.productVO.productName}}</view>
+                    <view class="product-price">￥<text class="realPrice">{{productInfo.productVO.retailPrice}}</text> <text class="originPrice"> ￥ {{productInfo.productVO.marketPrice}}</text></view>
+                </view>
+                <view class="share-wrapper">
+                    <view class="share-icon"><image src="./../images/share.png"></image></view>
+                    <view class="share-title">分享</view>
+                    <button open-type='share'></button>
+                </view>
+            </view>
+            <view class="product-info">
+               <view class="sale-amount-wrapper">
+                   <view class="sale-amount wrapper-item" >
+                       <image src="./../images/icon-select3.png"></image>
+                       <text>极速发货</text>
+                   </view>
+                   <view class="carrier-fare wrapper-item">
+                       <image src="./../images/icon-select3.png"></image>
+                       <text>全国发货</text>
+                   </view>
+                   <view class="click-amount wrapper-item">
+                       <image src="./../images/icon-select3.png"></image>
+                       <text>{{productInfo.productVO.pageview}}次浏览</text>
+                   </view>
+               </view>
+            </view>
+            <van-cell-group>
+                <van-cell title="已选择" is-link value="{{productInfo.productItemVOList[activeIndex].name}}" style="overflow: hidden" @tap="showSpecPopup"/>
+            </van-cell-group>
+            <view class="product-detail-title">商品详情</view>
+            <van-goods-action>
+                <van-goods-action-icon
+                        icon="home-o"
+                        text="首页"
+                        @tap="goToHome"
+                />
+                <van-goods-action-icon
+                        icon="chat-o"
+                        text="客服"
+                        bind:click="onClickIcon"
+                />
+                <van-goods-action-icon
+                        icon="star"
+                        text="已收藏"
+                        @tap="onClickForCancelCol"
+                        class="alredyCollected"
+                        wx:if="{{productInfo.productVO.collected === '1' }}"
+
+                />
+                <van-goods-action-icon
+                        icon="star-o"
+                        text="收藏"
+                        @tap="onClickForCollect"
+                        wx:else
+                />
+                <van-goods-action-button
+                        text="查看规格"
+                        type="warning"
+                        @tap="showSpecPopup"
+                />
+                <van-goods-action-button
+                        text="智能配灯"
+                        @tap="goToSmart"
+                />
+            </van-goods-action>
+            <view class="product-detail-image">
+                <repeat for="{{productDetailImages}}" key="index" index="index" item="item" >
+                    <image src="{{item}}" @tap="previewDetailImg({{index}})" mode="widthFix"></image>
+                </repeat>
+            </view>
+            <view class="footer-icon">
+                <image src="./../images/远景图标.jpg"></image>
+            </view>
+            <van-popup
+                    show="{{ isShowSpecPopUp }}"
+                    position="bottom"
+                    custom-style="height: 700rpx;"
+                    bind:close="CloseSpecPopup"
+            >
+                <view class="popup">
+                    <view class="blank-content"></view>
+                    <view class="product-spec">
+                        <view class="img-wrapper">
+                            <image src="{{productImg[0]}}"></image>
+                        </view>
+                        <view class="spec-detail">
+                            <view class="spec-price">￥{{productInfo.productItemVOList[activeIndex].marketPrice}}</view>
+                            <view class="spec-name">已选：<span>{{productInfo.productItemVOList[activeIndex].name}}</span></view>
+                        </view>
+                        <view class="spec-list-wrapper">
+                            <text class="list-title">类别</text>
+                            <view class="spec-list">
+                                <scroll-view scroll-y="true" style="height: 200rpx;" scroll-y="true">
+                                    <view class="scroll-view-wrapper">
+                                        <!--<view class={ {{activeIndex}} === {{index}}?'scroll-view-item':'scroll-view-item-active'}>全脂牛奶</view>-->
+                                        <!--<view class="">全脂牛奶</view>-->
+                                        <repeat wx:for="{{productInfo.productItemVOList}}" wx:key="index" index="index" item="item">
+                                            <view class="{{activeIndex === index?'scroll-view-item-active':'scroll-view-item'}}" @tap="onClickItem({{index}})">{{item.name}}</view>
+                                        </repeat>
+
+                                    </view>
+                                </scroll-view>
+                            </view>
+                        </view>
+                        <view class="spec-btn" @tap="CloseSpecPopup">
+                            保存
+                        </view>
+                    </view>
+                </view>
+            </van-popup>
+        </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+
+  export default class home extends wepy.page {
+    config = {
+        'navigationBarTitleText': '商品详情',
+      usingComponents: {
+          'van-popup': '../components/vant/popup/index',
+        // 'van-button': '../components/vant/button/index',
+        'van-notice-bar': '../components/vant/notice-bar/index',
+        'van-goods-action': '../components/vant/goods-action/index',
+        'van-goods-action-icon': '../components/vant/goods-action-icon/index',
+        'van-goods-action-button': '../components/vant/goods-action-button/index',
+        // 'van-toast': '../components/vant/toast/index'
+        'van-icon': '../components/vant/icon/index',
+        'van-panel': '../components/vant/panel/index',
+        'van-cell': '../components/vant/cell/index',
+        'van-cell-group': '../components/vant/cell-group/index',
+      }
+    }
+    data = {
+      productId:'',
+      background: ['demo-text-1', 'demo-text-2', 'demo-text-3'],
+      indicatorDots: true,
+      vertical: false,
+      autoplay: false,
+      interval: 2000,
+      duration: 500,
+      productInfo: {},
+      productImg: [],
+      productDetailImages:[],
+      isShowSpecPopUp: false,
+      activeIndex:0
+    }
+    onLoad(options) {
+
+      var that = this
+        that.setData({
+            productId: options.id
+        })
+        that.productId = options.id
+      console.table(options)
+        wepy.showLoading({
+            title: '加载中...'
+        })
+      wx.getStorage({
+        key: 'session-id',
+        success: response => {
+            wx.request({
+                url: BASEURL + '/dengtao/api/product/getProduct/' + options.id,
+                header: { 'Cookie': 'JSESSIONID=' + response.data },
+                success: function (res) {
+                    console.error(res.data.data)
+                    that.setData({
+                        productInfo: res.data.data,
+                        productImg: res.data.data.productVO.productImages,
+                        productDetailImages: res.data.data.productVO.productDetailImages
+                    })
+                    that.productInfo = res.data.data
+                    that.productImg = res.data.data.productVO.productImages
+                    that.productDetailImages = res.data.data.productVO.productDetailImages
+                    that.lightingMatchImg = res.data.data.productVO.lightingMatchImgs
+                    console.log(that.productInfo.productVO.productImages);
+                    console.warn(that.productInfo)
+                    wepy.hideLoading()
+                }
+            })
+        }
+      });
+    }
+    onClickShare() {
+      console.log('分享')
+    }
+    onClickIcon() {
+      // Toast('点击图标');
+      console.log('点击图标')
+    }
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage(id="1") {
+        var that = this
+      // let users = wx.getStorageSync('userInfo')
+      // if (res.from === 'button') {}
+        console.log(id);
+        return {
+        title: that.productInfo.productVO.productName,
+        path: '/pages/detail?id=' + that.productId,
+        success: function(res) {}
+      }
+    }
+    // onShareAppMessage( options ){
+    //     var that = this;
+    //     // 设置菜单中的转发按钮触发转发事件时的转发内容
+    //     var shareObj = {
+    //         title: "转发的标题",        // 默认是小程序的名称
+    //         path: '/pages/index',        // 默认是当前页面，必须是以‘/’开头的完整路径
+    //         imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，
+    //         //支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+    //         success(res){
+    //             // 转发成功之后的回调
+    //             if(res.errMsg == 'shareAppMessage:ok'){
+    //
+    //             }
+    //         },
+    //         fail(){
+    //             // 转发失败之后的回调
+    //             if(res.errMsg == 'shareAppMessage:fail cancel'){
+    //                 // 用户取消转发
+    //             }else if(res.errMsg == 'shareAppMessage:fail'){
+    //                 // 转发失败，其中 detail message 为详细失败信息
+    //             }
+    //         },
+    //         complete(){
+    //             // 转发结束之后的回调（转发成不成功都会执行）
+    //         }
+    //     };
+    //     // 来自页面内的按钮的转发
+    //     if( options.from == 'button' ){
+    //         var eData = options.target.dataset;
+    //         console.log( eData.name );     // shareBtn
+    //         // 此处可以修改 shareObj 中的内容
+    //         shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+    //     }
+    //     // 返回shareObj
+    //     return shareObj;
+    // }
+
+      onClickButton() {
+      // Toast('点击按钮');
+      console.log('点击按钮')
+    }
+      // 去往智能配灯
+    goToSmart(){
+        var that = this
+        wx.navigateTo({
+          url: '../pages/smart?imgURL=' + that.lightingMatchImg[0]
+        })
+    }
+
+    methods = {
+        // 图片预览
+        previewImg(index){
+            var that = this
+            wx.previewImage({
+                current: that.productImg[index],     //当前图片地址
+                urls: that.productImg,               //所有要预览的图片的地址集合 数组形式
+                success: function(res) {},
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        },
+        previewDetailImg(index){
+            var that = this
+            wx.previewImage({
+                current: that.productDetailImages[index],     //当前图片地址
+                urls: that.productDetailImages,               //所有要预览的图片的地址集合 数组形式
+                success: function(res) {},
+                fail: function(res) {},
+                complete: function(res) {},
+            })
+        },
+        onClickItem(index){
+            this.setData({
+                activeIndex:index
+            })
+            this.activeIndex = index
+        },
+        showSpecPopup() {
+            this.setData({ isShowSpecPopUp: true });
+            this.isShowSpecPopUp = true
+        },
+
+        CloseSpecPopup() {
+            this.setData({ isShowSpecPopUp: false });
+            this.isShowSpecPopUp = false
+        },
+        onClickForCancelCol(){
+            var that = this
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/favorite/cancel/'+ that.productInfo.productVO.id,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        method: 'post',
+                        success: function (res) {
+                            console.log(res);
+                            console.log(res.data.code);
+                            if (res.data.code === 1){
+                                wx.request({
+                                    url: BASEURL + '/dengtao/api/product/getProduct/' + that.productInfo.productVO.id,
+                                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                    success: function (res) {
+                                        console.error(res.data.data)
+                                        that.setData({
+                                            productInfo: res.data.data,
+                                            productImg: res.data.data.productVO.productImages
+                                        })
+                                        that.productInfo = res.data.data
+                                        that.productImg = res.data.data.productVO.productImages
+                                        console.log(that.productInfo.productVO.productImages);
+                                        console.warn(that.productInfo.productVO.collected)
+                                    }
+                                })
+                                wx.showToast({
+                                    title: '已取消收藏',
+                                    icon: 'success'
+                                })
+                            }
+                        }
+                    })
+                }
+            });
+        },
+        onClickForCollect(){
+            var that = this
+            wx.getStorage({
+              key: 'session-id',
+              success: response => {
+                  wx.request({
+                      url: BASEURL + '/dengtao/api/product/collectProduct/'+ that.productInfo.productVO.id,
+                      header: { 'Cookie': 'JSESSIONID=' + response.data },
+                      method: 'put',
+                      success: function (res) {
+                          console.log(res);
+                          console.log(res.data.code);
+                          if (res.data.code === 1){
+                              wx.request({
+                                  url: BASEURL + '/dengtao/api/product/getProduct/' + that.productInfo.productVO.id,
+                                  header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                  success: function (res) {
+                                      console.error(res.data.data)
+                                      that.setData({
+                                          productInfo: res.data.data,
+                                          productImg: res.data.data.productVO.productImages
+                                      })
+                                      that.productInfo = res.data.data
+                                      that.productImg = res.data.data.productVO.productImages
+                                      console.log(that.productInfo.productVO.productImages);
+                                      console.warn(that.productImg)
+                                  }
+                              })
+                              wx.showToast({
+                                title: '收藏成功',
+                                icon: 'success'
+                              })
+                          }
+                      }
+                  })
+              }
+            });
+        }  ,
+        goToHome(){
+            console.log("haha");
+            // wx.navigateBack()
+            wx.reLaunch({
+                url: '../pages/home'
+            })
+        },
+      changeIndicatorDots() {
+        this.setData({
+          indicatorDots: !this.data.indicatorDots
+        })
+      },
+
+      changeAutoplay() {
+        this.setData({
+          autoplay: !this.data.autoplay
+        })
+      },
+
+      intervalChange(e) {
+        this.setData({
+          interval: e.detail.value
+        })
+      },
+
+      durationChange(e) {
+        this.setData({
+          duration: e.detail.value
+        })
+      }
+    }
+  }
+</script>

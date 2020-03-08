@@ -1,0 +1,60 @@
+<style>
+    page{
+        width: 100%;
+        height: 100%;
+    }
+    .category{
+        width: 100%;
+        height: 100%;
+    }
+    .pop{
+        width: 500rpx;
+        height: 500rpx;
+        background-color: red;
+    }
+    i{
+        width: 300rpx;
+        height: 300rpx;
+    }
+</style>
+<template>
+    <view class="category">
+        dsa
+       <view @tap="showPopup" class="i">sda</view>
+
+        <van-popup show="{{ show }}" bind:close="onClose">
+            <view class="pop">哈哈</view>
+        </van-popup>
+    </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '分类',
+      'usingComponents': {
+        'van-popup': '../components/vant/popup/index'
+      }
+    }
+    data= {
+      show: false
+    }
+    onClickItem() {
+      console.log('click')
+    }
+    methods = {
+      showPopup() {
+        this.setData({ show: true })
+        this.show = true
+      },
+      onClose() {
+        this.setData({ show: false });
+        this.show = false
+      },
+      onClickItem() {
+        console.log('click')
+      }
+    }
+  }
+</script>

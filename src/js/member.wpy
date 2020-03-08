@@ -1,0 +1,418 @@
+<style lang="scss">
+
+.member{
+    width: 100%;
+    height: 100%;
+    background-color: #f0f3f6;
+}
+.header{
+    padding: 30rpx;
+    box-sizing: border-box;
+    background-color: #fd4e02;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400rpx;
+    .header-top{
+        width: 100%;
+        height: 150rpx;
+        /*background-color: blue;*/
+        position: relative;
+        /*left: 0;*/
+        /*top: 0;*/
+        .top-avatar{
+            position: absolute;
+            top: 30rpx;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110rpx;
+            height: 110rpx;
+            border-radius: 50%;
+            background-color: pink;
+            border: 2px solid white;
+            .avatar-image{
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .acount-manage{
+            position: absolute;
+            right: 30rpx;
+            top: 30rpx;
+            font-size: 30rpx;
+            color: #f1f1f1;
+        }
+    }
+    .header-bottom{
+        margin-top: 30rpx;
+        display: flex;
+        padding: 0 100rpx;
+        justify-content: space-between;
+        align-items: center;
+        .bottom-wrapper{
+            display: flex;
+            flex-direction: column;
+            text{
+                text-align: center;
+                &.top-text{
+                    color: #f1f1f1;
+                    font-size: 32rpx;
+                }
+                &.bottom-text{
+                    color: yellow;
+                    margin-top: 20rpx;
+                    &.person-type{
+                        padding: 3rpx 5rpx;
+                        box-sizing: border-box;
+                        font-size: 30rpx;
+                        border: 1px solid yellow;
+                    }
+                }
+            }
+        }
+    }
+    button{
+        height: 60rpx;
+        width: 300rpx;
+        background-color: transparent;
+        line-height: 60rpx;
+        font-size: 30rpx;
+        border: 1px solid yellow;
+        color: yellow;
+        margin: auto;
+    }
+}
+.content{
+
+
+    margin-top: 10rpx;
+    background-color: #ffffff;
+    padding: 30rpx;
+    box-sizing: border-box;
+    .content-item{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f3fdee;
+        height: 100rpx;
+
+        image{
+            width: 50rpx;
+            height: 50rpx;
+            /*vertical-align: center;*/
+
+        }
+        .item-left{
+            /*vertical-align: center;*/
+            position: relative;
+            image{
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .item-text{
+                margin-left: 60rpx;
+            }
+        }
+        .item-right{
+
+        }
+    }
+}
+</style>
+
+<template>
+<view class="member">
+    <view class="header" wx:if="{{userInfo}}">
+        <view class="header-top">
+            <view class="top-avatar">
+                <image class="avatar-image" src="{{userInfo.portrait}}"></image>
+            </view>
+            <view class="acount-manage" @tap="goToMemCenter">账户管理 ></view>
+        </view>
+        <view class="header-bottom">
+            <view class="remaining-wrapper bottom-wrapper">
+                <text class="remaining-name top-text">余额</text>
+                <text class="remianing-number bottom-text">{{userInfo.balance}}0</text>
+            </view>
+            <view class="person-name-wrapper bottom-wrapper">
+                <text class="person-name top-text">{{userInfo.userNickname}}</text>
+                <text class="person-type bottom-text" @tap="clickForSign" wx:if="{{userInfo.isSign.type===0}}">签到</text>
+                <text class="person-type bottom-text" wx:else>已签到</text>
+            </view>
+            <view class="point-wrapper bottom-wrapper">
+                <text class="point-name top-text">积分</text>
+                <text class="point-number bottom-text">{{userInfo.point}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="header" wx:else>
+        <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">立即登陆</button>
+    </view>
+    <view class="content">
+        <view class="content-item" @tap="goToMemGroup">
+                <view class="item-left">
+                    <image src="./../images/member/我的团队.png"></image>
+                    <text class="item-text">我的团队</text>
+                </view>
+                <view class="item-right">
+                    <image src="./../images/arrow-right.png"></image>
+                </view>
+        </view>
+        <view class="content-item" @tap="goToPoster">
+            <view class="item-left">
+                <image src="./../images/member/二维码.png"></image>
+                <text class="item-text">推广二维码</text>
+            </view>
+            <view class="item-right">
+                <image src="./../images/arrow-right.png"></image>
+            </view>
+        </view>
+        <view class="content-item" @tap="goToCollection">
+            <view class="item-left">
+                <image src="./../images/member/我的收藏.png"></image>
+                <text class="item-text">我的收藏</text>
+            </view>
+            <view class="item-right">
+                <image src="./../images/arrow-right.png"></image>
+            </view>
+        </view>
+        <view class="content-item" @tap="goToHistory">
+            <view class="item-left">
+                <image src="./../images/member/我的足迹.png"></image>
+                <text class="item-text">我的足迹</text>
+            </view>
+            <view class="item-right">
+                <image src="./../images/arrow-right.png"></image>
+            </view>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  import global from './../js/index'
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '个人中心',
+      'usingComponents': {
+        'van-cell': '../components/vant/cell/index',
+        'van-cell-group': '../components/vant/cell-group/index'
+      }
+    }
+    data = {
+      userInfo: null,
+      isNotSigned: true
+    }
+    methods={
+      //  点击签到
+      clickForSign(){
+          var that =this
+          wx.getStorage({
+              key: 'session-id',
+              success: response => {
+                  wx.request({
+                      url: BASEURL + '/dengtao/api/page/signIn',
+                      header: { 'Cookie': 'JSESSIONID=' + response.data },
+                      method: 'post',
+                      success: function (res) {
+                          if (res.data.code===1){
+                              wepy.showLoading({
+                                  title: '签到成功',
+                                  duration: 1000
+                              })
+                              that.onLoad()
+
+                              // wx.getStorage({
+                              //     key: 'session-id',
+                              //     success: response => {
+                              //         console.log(response);
+                              //         // wx.request({
+                              //         //     url: BASEURL + '/dengtao/miniprogram/updateUser.do',
+                              //         //     data: {
+                              //         //         ...res.detail
+                              //         //     },
+                              //         //     header: { 'Cookie': 'JSESSIONID=' + response.data },
+                              //         //     method: 'post',
+                              //         //     success: function (res) {
+                              //         //         // console.log('dierbu')
+                              //         //         // console.log(res)
+                              //         //         wx.setStorage({
+                              //         //             key:"userInfo",
+                              //         //             data: res.data.data
+                              //         //         });
+                              //         //         that.setData({
+                              //         //             userInfo: res.data.data
+                              //         //         })
+                              //         //         that.userInfo = res.data.data
+                              //         //     }
+                              //         // })
+                              //     }
+                              // });
+                          }else{
+                              wepy.showLoading({
+                                  title: '签到失败',
+                                  duration: 1000
+                              })
+                          }
+
+
+                          // that.favoriteProducts = res.data.data
+                          // console.log("获得到了本月收藏");
+                          // wepy.hideLoading()
+                          console.log(res.data)
+                      }
+                  })
+              }
+          })
+          console.log('点击了签到');
+      },
+      bindGetUserInfo(res) {
+          var that =this
+        console.log(res)
+        // var that = this
+        if (res.detail.userInfo) {
+          this.userInfo = res.detail.userInfo
+          wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                console.log(response);
+                wx.request({
+                    url: BASEURL + '/dengtao/miniprogram/updateUser.do',
+                    data: {
+                        ...res.detail
+                    },
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    method: 'post',
+                    success: function (res) {
+                        // console.log('dierbu')
+                        // console.log(res)
+                        wx.setStorage({
+                          key:"userInfo",
+                          data: res.data.data
+                        });
+                        that.setData({
+                            userInfo: res.data.data
+                        })
+                        that.userInfo = res.data.data
+                    }
+                })
+            }
+          });
+          // 保存到本地
+          // wx.setStorage({
+          //   key: 'userInfo',
+          //   data: that.userInfo
+          // })
+          // wx.login({
+          //   success: function (res) {
+          //     console.log('haha:' + res.code)
+          //     wx.request({
+          //       url: BASEURL + '/dengtao/miniprogram/login.do',
+          //       method: 'post',
+          //       data: {
+          //         js_code: res.code
+          //       },
+          //       success: function (res) {
+          //         console.log(res)
+          //       }
+          //     })
+          //   }
+          // })
+        } else {
+          console.log('点击了拒绝授权')
+          wx.showToast({
+            title: '你还没有登陆哦'
+          })
+        }
+      },
+
+      goToMemCenter() {
+        console.log('点击了哦我账户管理')
+        wx.navigateTo({
+          url: '../pages/memCenter'
+        })
+      },
+      goToCollection() {
+        console.log('点击了哦我的收藏')
+        wx.navigateTo({
+          url: '../pages/memCollection'
+        })
+      },
+      goToMemGroup() {
+        console.log('点击了去我的团队')
+        wx.navigateTo({
+          url: '../pages/memGroup'
+        })
+      },
+      goToHistory() {
+            console.log('点击了去我的足迹')
+            wx.navigateTo({
+                url: '../pages/memHistory'
+            })
+        },
+      goToPoster() {
+          console.log('跳转到了我的二维码');
+          wx.navigateTo({
+              url: '../pages/memPoster'
+          })
+      }
+    }
+    onLoad() {
+      var that = this
+      // wx.getStorage({
+      //   key: 'userInfo',
+      //   success: res => {
+      //     console.log(res)
+      //     that.userInfo = res.data
+      //   }
+      // })
+      wx.getStorage({
+        key: 'session-id',
+        success: response => {
+            wx.request({
+                url: BASEURL + '/dengtao/api/user/info',
+                header: { 'Cookie': 'JSESSIONID=' + response.data },
+                success: function (res) {
+                    that.setData({
+                        userInfo: res.data.data,
+                    })
+                    that.userInfo = res.data.data
+                    that.userInfo.portrait = that.userInfo.portrait + '#'+ new Date().getTime()
+                }
+            })
+        }
+      });
+
+
+
+      // wepy.showLoading({
+      //     title: '加载中...'
+      // })
+
+    }
+    onShow(){
+        var that =this
+        wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                wx.request({
+                    url: BASEURL + '/dengtao/api/user/info',
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    success: function (res) {
+                        that.setData({
+                            userInfo: res.data.data,
+                        })
+                        that.userInfo = res.data.data
+                        that.userInfo.portrait = that.userInfo.portrait + '#'+ new Date().getTime()
+                    }
+                })
+            }
+        });
+    }
+  }
+</script>

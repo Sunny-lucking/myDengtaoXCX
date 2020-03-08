@@ -1,0 +1,89 @@
+{
+	"description": "A WePY project",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"enhance": false,
+		"postcss": true,
+		"minified": false,
+		"newFeature": true,
+		"coverView": true,
+		"nodeModules": true,
+		"autoAudits": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
+	},
+	"compileType": "miniprogram",
+	"appid": "wx46dd1aa06d8dab15",
+	"projectname": "mystore",
+	"miniprogramRoot": "dist/",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/member",
+					"pathName": "pages/member",
+					"query": "12",
+					"scene": 1011
+				},
+				{
+					"id": -1,
+					"name": "pages/smart",
+					"pathName": "pages/smart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/twoDimensionCode",
+					"pathName": "pages/twoDimensionCode",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/integral",
+					"pathName": "pages/integral",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "pages/zhinengpeideng",
+					"pathName": "pages/zhinengpeideng",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}

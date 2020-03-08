@@ -1,0 +1,307 @@
+<style lang="scss">
+.home{
+    background-color: #e9e8e5;
+}
+.van-search__action{
+    font-size: 12rpx;
+}
+.tabs-wrapper{
+
+    padding: 50rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    li,navigator,.tabs-item{
+        margin-top: 30rpx;
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        image{
+            width: 50%;
+            min-height: 100 rpx;
+        }
+        span{
+            margin-top: 30rpx;
+            font-size: 30rpx;
+            font-weight: lighter;
+        }
+    }
+}
+.recommend{
+    .recommend-title{
+        background-color: #fff;
+        padding: 20rpx 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 28rpx;
+        .title-left{
+            font-size: 32rpx;
+            &::before{
+                content: '';
+                border: 2px solid red;
+                margin-right: 20rpx;
+            }
+        }
+        .title-more{
+            color: orangered;
+        }
+    }
+    /*.product-list{*/
+        /*padding: 10rpx;*/
+        /*box-sizing: border-box;*/
+        /*display: flex;*/
+        /*flex-wrap: wrap;*/
+        /*justify-content: space-between;*/
+        /*.product-item{*/
+            /*background-color: #fff;*/
+            /*margin-top: 5rpx;*/
+            /*width: 49.9%;*/
+            /*display: flex;*/
+            /*flex-direction: column;*/
+            /*box-sizing: border-box;*/
+            /*align-items: center;*/
+            /*justify-content: center;*/
+            /*image{*/
+                /*width: 100%;*/
+                /*height: 400rpx;*/
+            /*}*/
+            /*.product-desc{*/
+                /*margin-top: 20rpx;*/
+                /*padding: 0 20rpx;*/
+                /*box-sizing: border-box;*/
+                /*font-size: 30rpx;*/
+                /*display: -webkit-box;*/
+                /*-webkit-box-orient: vertical;*/
+                /*-webkit-line-clamp: 2; //需要控制的文本行数*/
+                /*overflow: hidden;*/
+            /*}*/
+            /*.product-price{*/
+                /*padding: 10rpx;*/
+                /*box-sizing: border-box;*/
+                /*color: red;*/
+                /*font-size: 28rpx;*/
+                /*font-weight: bolder;*/
+                /*.origin-price{*/
+                    /*text-decoration: line-through;*/
+                    /*color: #ccc;*/
+                    /*margin-right: 20rpx;*/
+                    /*font-weight: normal;*/
+                /*}*/
+                /*span{*/
+                    /*font-size: 20rpx;*/
+                    /*border: 1px solid red;*/
+                    /*padding: 0 5rpx;*/
+                    /*box-sizing: border-box;*/
+                    /*border-radius: 10rpx;*/
+                /*}*/
+            /*}*/
+        /*}*/
+    /*}*/
+}
+.page-section-spacing{
+    height: 350rpx;
+}
+</style>
+
+<template>
+<view class="home">
+    <view class="page-section page-section-spacing swiper">
+        <swiper indicator-dots="{{indicatorDots}}" style="width: 100%;height: 100%"
+                autoplay="{{true}}" interval="{{2000}}" duration="{{duration}}">
+            <block wx:for="{{background}}" wx:key="*this">
+                <swiper-item style="width: 100%;height: 100%">
+                    <image src="{{item.pictureUrl}}" style="width: 100%;height: 100%" mode="aspectFill"></image>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+    <view class="tabs-board">
+        <view class="input-wrapper">
+            <van-search
+                    bind:change="onChange"
+                    value="{{ value }}"
+                    placeholder="请输入搜索关键词"
+                    bind:search="onSearch"
+            />
+        </view>
+        <ul class="tabs-wrapper">
+            <repeat for="{{homeCateList}}" key="index" index="index" item="item" >
+                <view class="tabs-item" @tap="goToCateThird" @tap="goToThird({{item.topClassification.type}}, {{item.classificationId}},{{item.remark}})">
+                    <image class="tabs-item-image" style="height: 120rpx;width: 120rpx" src="{{item.pictureUrl}}" alt=""></image>
+                    <span class="tabs-item-title">{{item.remark}}</span>
+                </view>
+            </repeat>
+
+        </ul>
+    </view>
+    <view class="recommend">
+        <view class="recommend-title">
+            <view class="title-left">推荐商品</view>
+            <!--<view class="title-more">查看更多</view>-->
+        </view>
+        <!--<view wx:if="{{homeProductList.length>1}}">-->
+            <!--<productList  :productList.sync='homeProductList'></productList>-->
+        <!--</view>-->
+
+        <view class="product-list">
+            <repeat for="{{homeProductList}}" key="index" index="index" item="item" >
+                <view class="product-item" @tap="goToDetail({{item.id}})">
+                    <image src="{{item.productImages[0]}}" alt="mei"></image>
+                    <view class="product-desc">{{item.productName}}</view>
+                    <!--第一版-->
+                    <!--<view class="product-price">￥{{item.retailPrice}} <text class="origin-price">￥{{item.marketPrice}}</text>-->
+
+                    <!--第二版-->
+                    <view class="product-price" wx:if="{{item.retailPrice === item.maxRetailPrice}}">￥{{item.maxRetailPrice}}</view>
+                    <view class="product-price" wx:if="{{item.retailPrice !== item.maxRetailPrice}}">￥{{item.retailPrice}}- {{item.maxRetailPrice}}
+                    </view>
+                </view>
+            </repeat>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  import ProductList from "./../components/productList"
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '首页',
+      enablePullDownRefresh: true,
+      // 不配成dark的话三个加载中的点会看不到，其实是出来了，只是三个点是白色的，如果你的页面背景也是白的，那就看不出效果了
+      backgroundTextStyle: 'dark',
+      usingComponents: {
+        'van-search': '../components/vant/search/index',
+        'van-tag': '../components/vant/tag/index'
+      }
+    }
+
+    components= {
+        productList:ProductList
+    }
+
+
+    onSearch() {
+        var that = this
+        console.log('点击搜索商品')
+        console.log(this.value)
+        wx.navigateTo({
+            url: '../pages/search?searchInputValue=' + that.value
+        })
+    }
+    onClickDetail() {
+      console.log('haha')
+      wx.navigateTo({
+        url: 'pages/detail'
+      })
+    }
+    methods= {
+        onChange(e) {
+            console.log(e);
+            this.setData({
+                value: e.detail
+            });
+            this.value = e.detail
+            console.log(this.value);
+        },
+        // 搜索商品
+        gotoSearch() {
+            var that = this
+            console.log('点击搜索商品')
+            console.log(this.searchInputValue)
+            wx.navigateTo({
+                url: '../pages/search?searchInputValue=' + that.searchInputValue
+            })
+        },
+        // 修改搜索框的值
+        getSearchInputValue(e) {
+            console.log(e.detail.value)
+            this.setData({
+                searchInputValue: e.detail.value
+            })
+            this.searchInputValue = e.detail.value
+        },
+        goToDetail(id) {
+            wx.navigateTo({
+                url: '../pages/detail?id=' + id
+            })
+        },
+      onClickDetail() {
+        console.log('haha')
+        // wepy.navigateTo({
+        //   url: '/pages/detail'
+        // })
+        // this.$navigate({url: '/pages/detail'})
+        this.$parent.$navigate({url: '/pages/detail'})
+      },
+        goToThird(type,productId,strname) {
+            var that = this
+            console.log("我要去三级了");
+            console.error(productId)
+            wx.navigateTo({
+                url: '../pages/cateThird?type=' + that.typeArr[type-1] + '&productId=' + productId + '&strname=' + strname
+            })
+        },
+    }
+    data = {
+        typeArr: ["typeId","style","spaceId","material","colorId","brandId"],
+      background: ['demo-text-1', 'demo-text-2', 'demo-text-3'],
+      indicatorDots: true,
+      vertical: false,
+      autoplay: false,
+      interval: 2000,
+      duration: 500,
+      // 首页推荐商品分类
+      homeCateList: [],
+      // 首页推荐商品
+      homeProductList: [],
+      value: ''
+    }
+    onLoad() {
+      var that = this
+      // 轮播图
+        wepy.showLoading({
+            title: '加载中...'
+        })
+
+        wx.request({
+            url: BASEURL + '/dengtao/api/index/getRotationImages',
+            success: function (res) {
+                console.log('轮播图')
+                console.log(res.data.data)
+                that.setData({
+                    background: res.data.data
+                })
+                that.background = res.data.data
+                wepy.hideLoading();
+            }
+        })
+        // 首页推荐商品分类
+        wx.request({
+            url: BASEURL + '/dengtao/api/index/getRecommendClassification',
+            success: function (res) {
+                console.log('首页推荐商品分类')
+                console.log(res.data.data)
+                that.setData({
+                    homeCateList: res.data.data
+                })
+                that.homeCateList = res.data.data
+            }
+        })
+        // 首页推荐商品
+        wx.request({
+            url: BASEURL + '/dengtao/api/index/getRecommendProduct',
+            success: function (res) {
+                console.log(res.data.data)
+                that.setData({
+                    homeProductList: res.data.data
+                })
+                that.homeProductList = res.data.data
+            }
+        })
+    }
+  }
+</script>

@@ -1,0 +1,741 @@
+<style lang="scss">
+    page{
+
+        width: 100%;
+        height: 100%;
+    }
+    .smarthome{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+    .background-image{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -99;
+    }
+    .bottom-bar{
+        position: absolute;
+        bottom: 10rpx;
+        left: 40rpx;
+        display: flex;
+        .bar-item{
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            position: relative;
+            image{
+                width: 50rpx;
+                height: 50rpx;
+                margin-right: 20rpx;
+            }
+            text{
+                font-size: 20rpx;
+                color: white;
+            }
+            button{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                background-color: transparent;
+                outline: none!important;
+                border: none!important;
+            }
+            button::after{
+                outline: none!important;
+                border: none!important;
+            }
+        }
+    }
+    .page-section{
+        width: 100%;
+        height: 100%;
+        movable-area {
+            /*height: 400rpx;*/
+            /*width: 400rpx;*/
+            /*margin: 50rpx;*/
+            width: 100%;
+            height: 100%;
+            /*background-color: #ccc;*/
+            overflow: hidden;
+            movable-view{
+                width: 60px;
+                height: 60px;
+                /*background-color: red;*/
+                image{
+                    /*width: 200px;*/
+                    /*height: 200px;*/
+                    z-index: 99;
+                    width: 300rpx;
+                    height: 300rpx;
+                    /*<!--transform: translate3d(-50%, -50%, 0) scale(0.33, 0.33);-->*/
+                     /*<!-- -webkit-transform: translate3d(-50%, -50%, 0) scale(0.33, 0.33);-->*/
+                     /*<!-- -moz-transform: translate3d(-50%, -50%, 0) scale(0.33, 0.33);-->*/
+                     /*<!-- -ms-transform: translate3d(-50%, -50%, 0) scale(0.33, 0.33);-->*/
+                }
+            }
+        }
+    }
+    /*.touch-wrapper{*/
+        /*transform-origin: center;*/
+        /*position: absolute;*/
+        /*z-index: 100;*/
+    /*}*/
+
+    /*.img-wrapper {*/
+        /*box-sizing: border-box;*/
+        /*width: 100%;*/
+        /*transform-origin: center;*/
+        /*float: left;*/
+        /*border: 5rpx transparent dashed;*/
+    /*}*/
+    /*.img-wrapper image {*/
+        /*float: left;*/
+    /*}*/
+    /*.touchActive .x {*/
+        /*display: block;*/
+    /*}*/
+
+    /*.touchActive .o {*/
+        /*display: block;*/
+    /*}*/
+
+    /*<!--.x {-->*/
+        /*<!--position: absolute;-->*/
+        /*<!--top: -25rpx;-->*/
+        /*<!--left: -25rpx;-->*/
+        /*<!--z-index: 500;-->*/
+        /*<!--display: none;-->*/
+        /*<!--width: 50rpx;-->*/
+        /*<!--height: 50rpx;-->*/
+        /*<!--overflow: hidden;-->*/
+        /*<!--font-weight: bold;-->*/
+        /*<!--color: #d1e3f1;-->*/
+    /*<!--}-->*/
+    /*<!--.o {-->*/
+        /*<!--position: absolute;-->*/
+        /*<!--bottom: -25rpx;-->*/
+        /*<!--right: -25rpx;-->*/
+        /*<!--width: 50rpx;-->*/
+        /*<!--height: 50rpx;-->*/
+        /*<!--text-align: center;-->*/
+        /*<!--display: none;-->*/
+        /*<!--overflow: hidden;-->*/
+        /*<!--font-weight: bold;-->*/
+        /*<!--color: #d1e3f1;-->*/
+    /*<!--}-->*/
+    /*<!--.active {-->*/
+        /*<!--background-color: rgb(78, 114, 151);-->*/
+    /*<!--}-->*/
+
+    /*.active view {*/
+        /*border: none;*/
+    /*}*/
+    /*.touchActive {*/
+        /*!* border: 4rpx #fff dashed; *!*/
+        /*z-index: 400;*/
+    /*}*/
+.testCanvas{
+    position: absolute;
+    left: 0;
+    bottom: -100%;
+    width: 100%;
+    height: 100%;
+    /*<!--z-index: -999;-->*/
+}
+.van-popup{
+    background-color: transparent!important;
+}
+
+.cateBoard{
+    width: 100%;
+    height: 100%;
+    .cate-top{
+        display: flex;
+        color: white;
+        background-color: black;
+        justify-content: space-around;
+        align-items: center;
+        height: 10%;
+        .top-item{
+            z-index: 99;
+            position: relative;
+            /*display: flex;*/
+            /*flex-direction: column;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            padding: 10rpx 0;
+            .first-wrapper{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                image{
+                    width: 35rpx;
+                    height: 35rpx;
+                }
+            }
+            .sub-wrapper{
+                position: absolute;
+                left: 0;
+                top: 90%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: white;
+                color: black;
+                .sub-item{
+                    text-align: center;
+                    width: 110rpx;
+                    padding: 5rpx;
+                    box-sizing: border-box;
+                    border-top: 1rpx solid aliceblue;
+                    font-size: 19rpx;
+                }
+            }
+
+        }
+    }
+    .cate-bottom{
+        height: 80%;
+        width: 100%;
+        /*background-color: red;*/
+        .bottom-list{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20rpx;
+            .bottom-item{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                .bottom-image{
+                    width: 90rpx;
+                    height: 90rpx;
+                }
+                text{
+                    margin-top: 10rpx;
+                    font-size: 28rpx;
+                    /*background-color: #fff;*/
+                    /*opacity: 0.3;*/
+                    color: white;
+                }
+                .blank-content{
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #fff;
+                    opacity: .3;
+                    z-index: -1;
+                }
+            }
+        }
+    }
+}
+</style>
+
+<template>
+<view class="smarthome">
+    <image class="background-image" src="{{backgroundImage}}" mode="widthFix"></image>
+    <view class="page-section">
+        <movable-area scale-area>
+            <movable-view direction="all" out-of-bounds bindchange="onChange" bindscale="onScale" scale scale-min="0.5" scale-max="10" scale-value="{{scale}}">
+                <image src="{{productImgURL}}" mode="widthFix"></image>
+            </movable-view>
+        </movable-area>
+    </view>
+
+    <view class="bottom-bar">
+        <view class="bar-item" @tap="showCateBoardPopup">
+            <image class="bar-bgImg" src="./../images/smarthome/pic-fill.png"></image>
+            <text>背景</text>
+        </view>
+        <view class="bar-item">
+            <image class="bar-save" src="./../images/smarthome/save.png"></image>
+            <text>保存</text>
+            <button bindtap='clickMe' open-type="getuserinfo"></button>
+        </view>
+        <view class="bar-item" @tap='img_w_show'>
+            <image class="bar-album" src="./../images/smarthome/album.png"></image>
+            <text>相册</text>
+        </view>
+        <view class="bar-item" @tap="goBack">
+            <image class="bar-return" src="./../images/smarthome/return.png"></image>
+            <text>返回</text>
+        </view>
+    </view>
+    <!--<van-cell title="展示弹出层" is-link bind:click="showPopup" />-->
+    <view class='testCanvas' style="height: 100%">
+        <canvas canvas-id='testCanvas' style="width:100%;height:100%"></canvas>
+    </view>
+    <van-popup show="{{ isShowCateBoard }}" bind:close="onCloseCateBoard" position="left"
+               custom-style="width: 50%;height:100%">
+        <view class="cateBoard">
+            <view class="cate-top">
+                <view class="top-item">
+                    <view class="first-wrapper" @tap="onClickForTiggleStyle">
+                        <text>风格</text>
+                        <image src="./../images/smarthome/nextForward.png"></image>
+                    </view>
+
+                    <view class="sub-wrapper" wx:if='{{isHiddenStyle}}'>
+                        <repeat wx:for="{{StyleCategory}}" wx:key="index" index="index" item="item">
+                            <view class="sub-item" @tap="onClickGetStyleBg({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+
+                    </view>
+                </view>
+
+                <view class="top-item">
+                   <view class="first-wrapper" @tap="onClickForTiggleSpace">
+                       <text>空间</text>
+                       <image src="./../images/smarthome/nextForward.png"></image>
+                   </view>
+                    <view class="sub-wrapper" wx:if='{{isHiddenSpace}}'>
+                        <repeat wx:for="{{SpaceCategory}}" wx:key="index" index="index" item="item">
+                            <view class="sub-item" @tap="onClickGetSpaceBg({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </view>
+            <view class="cate-bottom">
+                <scroll-view scroll-y="true" style="height: 100%;">
+                   <view class="bottom-list">
+                       <repeat wx:for="{{AllBackgroupImage}}" wx:key="index" index="index" item="item">
+                           <view class="bottom-item" @tap="selectBg({{item.img}})">
+                               <image class="bottom-image" src="{{item.img}}"></image>
+                               <text>{{item.spaceId}}</text>
+                               <view class="balank-content"></view>
+                           </view>
+                       </repeat>
+
+                       <!--<repeat wx:for="{{}}" wx:key="index" index="index" item="item">-->
+                           <!--<view class="bottom-item">-->
+                               <!--<image class="bottom-image" src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/0df3d7ca7bcb0a46a2c557976163f6246a60afbd.jpg"></image>-->
+                               <!--<text>12345</text>-->
+                           <!--</view>-->
+                       <!--</repeat>-->
+                       <!--<view class="bottom-item">-->
+                           <!--<image class="bottom-image" src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/0df3d7ca7bcb0a46a2c557976163f6246a60afbd.jpg"></image>-->
+                           <!--<text>12345</text>-->
+                       <!--</view>-->
+                       <!--<view class="bottom-item">-->
+                           <!--<image class="bottom-image" src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/0df3d7ca7bcb0a46a2c557976163f6246a60afbd.jpg"></image>-->
+                           <!--<text>12345</text>-->
+                       <!--</view>-->
+                       <!--<view class="bottom-item">-->
+                           <!--<image class="bottom-image" src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/0df3d7ca7bcb0a46a2c557976163f6246a60afbd.jpg"></image>-->
+                           <!--<text>12345</text>-->
+                       <!--</view>-->
+                       <!--<view class="bottom-item">-->
+                           <!--<image class="bottom-image" src="https://dss1.baidu.com/70cFfyinKgQFm2e88IuM_a/forum/pic/item/0df3d7ca7bcb0a46a2c557976163f6246a60afbd.jpg"></image>-->
+                           <!--<text>12345</text>-->
+                       <!--</view>-->
+                   </view>
+                </scroll-view>
+            </view>
+        </view>
+    </van-popup>
+    <!--<repeat for="{{items}}" index="index" item="item" key="index">-->
+        <!--<view class="touch-wrapper">-->
+            <!--<view class="img-wrapper">-->
+                <!--<image src="./../images/smarthome/1.png"></image>-->
+                <!--<image src="./../images/smarthome/x.png" class="x"></image>-->
+                <!--<image src="./../images/smarthome/o.png" class="o"></image>-->
+            <!--</view>-->
+        <!--</view>-->
+    <!--</repeat>-->
+
+
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+
+  let index = 1
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '智能配灯',
+      'pageOrientation': 'landscape',
+      'navigationStyle': 'custom',
+        'disableScroll': true,
+        'usingComponents': {
+            'van-popup': '../components/vant/popup/index'
+        }
+    }
+    data= {
+      backgroundImage: '',
+      isBgListShow: false,
+        x: 0,
+        y: 0,
+        scale: 2,
+        canvasW:null,
+        canvasH:null,
+        isShowCanvs:true,
+        isShowCateBoard: false,
+        isHiddenStyle: false,
+        isHiddenSpace: false,
+        AllBackgroupImage: [],
+        AllBgCategories:[],
+        SpaceCategory: [],
+        StyleCategory: [],
+        productImgURL:''
+    }
+    // computed= {
+    //   backgroundImage2() {
+    //     return this.backgroundImage
+    //   }
+    // }
+      onLoad(options){
+          console.log(options);
+          var that = this
+          wepy.showLoading({
+              title: '拼命加载中...'
+          })
+          this.setData({
+              productImgURL: options.imgURL
+          })
+          this.productImgURL = options.imgURL
+          wx.getSystemInfo({
+            success: res => {
+                console.log(res);
+                that.setData({
+                    canvasW: res.windowWidth,
+                    canvasH: res.windowHeight
+                })
+                console.log(this);
+                console.log(that);
+                this.canvasW = res.windowWidth
+                this.canvasH = res.windowHeight
+            }
+          })
+          wx.getStorage({
+              key: 'session-id',
+              success: response => {
+                  wepy.hideLoading()
+                  wx.request({
+                      url: BASEURL + '/dengtao/api/intelligentCollocation/listBackgroundImageClassifications',
+                      header: { 'Cookie': 'JSESSIONID=' + response.data },
+                      success: function (res) {
+                          console.log('我的背景分类')
+                          console.table(res.data.data)
+                              that.setData({
+                                  SpaceCategory: res.data.data[0].children,
+                                  StyleCategory: res.data.data[1].children
+                              })
+                              that.SpaceCategory = res.data.data[0].children
+                              that.StyleCategory = res.data.data[1].children
+                          //     // console.log("产品列表");
+                          //     // console.log(that.historyProductList);
+                          // }else{
+                          //     that.setData({
+                          //         historyProductList: null
+                          //     })
+                          //     that.historyProductList = null
+                          // }
+
+                      }
+                  })
+                  wx.request({
+                      url: BASEURL + '/dengtao/api/intelligentCollocation/listBackgroundImages',
+                      header: { 'Cookie': 'JSESSIONID=' + response.data },
+                      success: function (res) {
+                          console.log('所有背景')
+                          console.table(res.data.data.records)
+                          that.setData({
+                              AllBackgroupImage:res.data.data.records,
+                              backgroundImage :res.data.data.records[0].img
+                          })
+                          that.AllBackgroupImage = res.data.data.records
+                          that.backgroundImage = res.data.data.records[0].img
+                          // that.StyleCategory = res.data.data[1].children
+                          wepy.hideLoading()
+                      }
+                  })
+              }
+          })
+      }
+    methods={
+        selectBg(imgURL){
+          this.setData({
+              backgroundImage: imgURL,
+              isShowCateBoard: false
+          })
+           this.backgroundImage = imgURL
+            this.isShowCateBoard = false
+
+        },
+        onClickGetStyleBg(id){
+            var that = this
+            console.log(id);
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wepy.hideLoading()
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/intelligentCollocation/listBackgroundImages?space='+ id,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            console.log('所有背景')
+                            console.table(res.data.data.records)
+                            that.setData({
+                                AllBackgroupImage:res.data.data.records,
+                                // isShowCateBoard: false,
+                                isHiddenStyle: false,
+                            })
+                            that.AllBackgroupImage = res.data.data.records
+                            // that.isShowCateBoard = false
+                            that.isHiddenStyle =  false
+                            // that.StyleCategory = res.data.data[1].children
+                        }
+                    })
+                }
+            })
+        },
+        onClickGetSpaceBg(id){
+            var that = this
+            console.log(id);
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wepy.hideLoading()
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/intelligentCollocation/listBackgroundImages?style='+ id,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            console.log('所有背景')
+                            console.table(res.data.data.records)
+                            that.setData({
+                                AllBackgroupImage:res.data.data.records,
+                                // isShowCateBoard: false,
+                                isHiddenSpace: false,
+                            })
+                            that.AllBackgroupImage = res.data.data.records
+                            // that.StyleCategory = res.data.data[1].children
+                            // that.isShowCateBoard = false
+                            that.isHiddenSpace =  false
+                        }
+                    })
+                }
+            })
+        },
+        onClickForTiggleStyle(){
+           var that =this
+           this.setData({
+               isHiddenStyle: !that.isHiddenStyle,
+               isHiddenSpace : false
+           })
+           this.isHiddenStyle =  !that.isHiddenStyle
+           this.isHiddenSpace =  false
+
+        },
+        onClickForTiggleSpace(){
+            var that =this
+            this.setData({
+                isHiddenSpace: !that.isHiddenSpace,
+                // isShowCateBoard: false
+                isHiddenStyle: false
+            })
+            this.isHiddenSpace =  !that.isHiddenSpace
+            that.isHiddenStyle =  false
+            // this.isShowCateBoard = false
+        },
+        getBgList(){
+
+        },
+        clickMe(){
+
+            var that =this
+
+            console.log("前面");
+            console.log(that.x);
+            console.log(that.productImgURL);
+            // console.log(that.isShowCanvs);
+            // that.setData({
+            //     isShowCanvs: true
+            // })
+            // that.isShowCanvs = true
+            // console.log(that.backgroundImage);
+            wepy.showLoading({
+                title:'保存中...'
+            })
+            wx.getImageInfo({
+                src: that.backgroundImage,
+                success: function (backgroupIMG) {
+                    console.log(backgroupIMG);
+                    console.log(backgroupIMG.width)
+                    console.log(backgroupIMG.path)
+                    wx.getImageInfo({
+                        src: that.productImgURL,
+                        success: function (productImgURL) {
+                            console.log(productImgURL.width)
+                            console.log(productImgURL.path)
+                            var ctx = wx.createCanvasContext('testCanvas');
+                            ctx.drawImage(backgroupIMG.path, 0, 0, that.canvasW, that.canvasH);
+                            ctx.drawImage(productImgURL.path, that.x, that.y, 200*that.scale, 200*that.scale);
+                            ctx.draw();
+                            console.log("111111");
+                            setTimeout(function () {
+                                wx.canvasToTempFilePath({
+                                    canvasId: 'testCanvas',
+                                    fileType: 'jpg',
+                                    success: function (res) {
+                                        console.log("222222");
+                                        console.log(res.tempFilePath);
+                                        wx.saveImageToPhotosAlbum({
+                                            filePath: res.tempFilePath,
+                                            success(res) {
+                                                console.log("3333");
+                                                console.log(res)
+                                                // wx.hideLoading();
+                                                // wepy.hideLoading();
+                                                wepy.showToast({
+                                                    title: '保存成功',
+                                                });
+
+                                                // that.setData({
+                                                //     isShowCanvs: false
+                                                // })
+                                                // that.isShowCanvs = false
+                                                // console.log("后面");
+                                                // console.log(that.isShowCanvs);
+                                            },
+                                            fail() {
+                                                // 在需要用户授权时调用wx.getSetting()
+                                                wx.getSetting({
+                                                    success: function (res) {
+                                                        console.log(res);
+                                                        console.log("授....");
+                                                        if (res.authSetting["scope.writePhotosAlbum"]) {//用户已授权
+                                                            console.log("已经授权过了");
+                                                        } else {//用户未授权
+                                                            console.log("还没授权");
+                                                            // 可以添加个提示信息，在这里就我就不写了哈
+                                                            wx.openSetting({//打开小程序设置页面，用户自己选择授权
+                                                                success: function (res) {
+                                                                    console.log("授权失败");
+                                                                    wepy.showToast({
+                                                                        title:'保存失败',
+                                                                        icon:'none'
+                                                                    })
+                                                                    res.authSetting = {
+                                                                        "scope.writePhotosAlbum": true
+                                                                    }
+                                                                },
+                                                                fail: function () {
+                                                                    console.log("打开设置失败");
+                                                                    wepy.showToast({
+                                                                        title:'保存失败',
+                                                                        icon:'none'
+                                                                    })
+                                                                    wx.navigateTo({
+                                                                        url: '../pages/openSetting'
+                                                                    })
+                                                                }
+
+                                                            })
+                                                        }
+                                                    }
+                                                })
+
+                                                wepy.showToast({
+                                                    title:'保存失败',
+                                                    icon:'none'
+                                                })
+                                            }
+                                        })
+                                    },
+                                    fail: function (res) {
+                                        wepy.showToast({
+                                            title:'保存失败'
+                                        })
+                                    }
+                                })
+                            },3000)
+                        }
+                    })
+
+
+                }
+            })
+
+        }  ,
+      // 获取手机照片和拍照
+      img_w_show() {
+        var _this = this
+        console.log(_this.backgroundImage)
+        wx.chooseImage({
+          count: 9, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            var tempFilePaths = res.tempFilePaths[0]
+            console.log(tempFilePaths)
+            _this.setData({
+              backgroundImage: tempFilePaths
+            })
+              _this.backgroundImage = tempFilePaths
+            console.log(_this.backgroundImage)
+            console.log(_this.backgroundImage2)
+          }
+        })
+      },
+      // 点击商品
+      // WraptouchStart: function (e) {
+      //   for (let i = 0; i < this.items.length; i++) {
+      //     this.items[i].active = false
+      //     if (e.currentTarget.dataset.id === this.items[i].id) {
+      //       index = i
+      //       this.items[index].active = true
+      //     }
+      //   }
+      //   this.setData({
+      //     items: this.items
+      //   })
+      //   this.items[index].lx = e.touches[0].clientX
+      //   this.items[index].ly = e.touches[0].clientY
+      //   console.log(this.items[index])
+      // }
+
+        onChange(e) {
+            console.log(e.detail)
+            this.setData({
+                x: e.detail.x,
+                y: e.detail.y
+            })
+            this.x= e.detail.x
+            this.y= e.detail.y
+
+        },
+        onScale(e) {
+            console.log(e.detail)
+        },
+
+        goBack(){
+          wx.navigateBack()
+        },
+        showCateBoardPopup() {
+            this.setData({ isShowCateBoard: true });
+            this.isShowCateBoard = true
+        },
+
+        onCloseCateBoard() {
+            this.setData({ isShowCateBoard: false });
+            this.isShowCateBoard = false
+        }
+    }
+  }
+</script>

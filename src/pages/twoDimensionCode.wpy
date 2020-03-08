@@ -1,0 +1,249 @@
+<style lang="less">
+.bg {
+  width: 100vw;
+  height: 100vh;
+}
+.canvas {
+  position: absolute;
+  top: 53%;
+  width: 100%;
+  height: 50%;
+}
+.user-avatar {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 13vh;
+  width: calc(13vh);
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user-name {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button {
+  margin-top: 5rpx;
+  border: 3rpx solid #c2b99c;
+  background-color: #323967;
+  color: #fff;
+  font-weight: bold;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<template lang="wxml">
+    <scroll-view>
+      <canvas 
+        canvas-id="gameCanvas" 
+        style="width:100vw; height:1334rpx;"
+      >
+<!--         <view class="user-avatar"><open-data type="userAvatarUrl"></open-data></view> -->
+      </canvas>
+    </scroll-view>
+    <button bindtap="createImage" class="button">保存到相册</button>
+ 
+</template>
+
+<script>
+import wepy from 'wepy';
+import { BASEURL } from '../utils/global';
+import Toast from 'wepy-com-toast'; //注册页面有关
+import testMixin from '../mixins/test';
+import 'wepy-async-function'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '推广二维码'
+  };
+
+  mixins = [testMixin];
+
+  data = {
+    codeUrlId: 0,
+    imageWidth:'',
+    imageHeight:'',
+    codePath: '',
+    portrait: '',
+    userNickname: '',
+    telephoneNum: ''
+  };
+
+  onReady(){
+
+    wx.showLoading({
+      title: '加载中'
+    });
+
+    let _this = this,
+      deviceWidth = 0;
+
+    wx.getStorage({
+      key: 'userInfo',
+      success: response => {
+        console.log(response);
+        _this.setData({
+          codeUrlId: response.data.id,
+          userNickname: response.data.userNickname,
+          telephoneNum: response.data.telephoneNum,
+          portrait: response.data.portrait
+        });
+        _this.data.codeUrlId = response.data.id;
+        _this.data.userNickname = response.data.userNickname;
+        _this.data.telephoneNum = response.data.telephoneNum;
+        _this.data.portrait = response.data.portrait;
+      }
+    });
+
+      //获取设备宽度，用于求所需画在画布上的图片的高度
+      wx.getSystemInfo({
+          success:function(res){
+              console.log(res);
+              deviceWidth = res.windowWidth;   //获取设备宽度
+
+              wepy.downloadFile({
+                  url: BASEURL + "/dengtao/getHttpsImage.html?imgUrl=http://huanling.productshow.cn/yichenyichenQrcode3.png",
+                  success(res){
+                      let backgroundImg = res.tempFilePath;
+                      wx.getImageInfo({    //获取图片信息
+                          //src: _this.data.imagePath,
+                          src: backgroundImg,
+                          success: function(res){
+                              let imageWidth = deviceWidth,
+                                  imageHeight = deviceWidth/res.width*res.height;  //求所需画在画布上的图片的高度
+                              //imageHeight = res.height;  //求所需画在画布上的图片的高度
+                              _this.setData({
+                                  'imageWidth': imageWidth,
+                                  'imageHeight':imageHeight
+                              });
+
+                              //获取设备的信息
+                              let mobile = wx.getSystemInfoSync();
+                              //获取设计图纸换算比例（用于自适应所有屏幕）
+                              let ratio = mobile.windowWidth / 375;
+                              //图片宽度、高度
+                              var arcWidth = 75 * ratio;
+                              //x-轴坐标
+                              var xCoor = 153 * ratio;
+                              //y-轴坐标
+                              var yCoor = 32 * ratio;
+
+                              const ctx = wx.createCanvasContext('gameCanvas');  //创建画布对象
+                              ctx.drawImage(res.path, 0, 0, imageWidth, imageHeight);  //添加图片
+                              ctx.drawImage(_this.data.portrait, 0, 0, 50, 50);  //添加小程序码
+                              ctx.setFontSize(18);      //设置字体大小
+                              ctx.setFillStyle('white');   //设置字体颜色
+                              ctx.fillText(_this.data.userNickname, (deviceWidth - ctx.measureText(_this.data.userNickname).width) * 0.5, yCoor * 4.5);  //设置昵称res.height/14.5
+                              if(_this.data.telephoneNum.length!=0){
+                                  ctx.fillText(_this.data.telephoneNum, (deviceWidth - ctx.measureText('15626360081').width) * 0.5, yCoor * 5.5);  //设置电话号码res.height/12
+                              }
+
+                              //需要将网络图片url 转为本地临时路径（res.tempFilePath为图片临时路径）
+                              //微信定义：clip() 方法从原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内（不能访问画布上的其他区域）。可以在使用 clip() 方法前通过使用 save() 方法对当前画布区域进行保存，并在以后的任意时间对其进行恢复（通过 restore() 方法）。
+                              wx.downloadFile({
+                                  url: BASEURL + "/dengtao/getHttpsImage.html?imgUrl="+_this.data.portrait,//下载头像图片
+                                  success: function(res) {
+                                      ctx.save()
+                                      ctx.beginPath()
+                                      ctx.arc(xCoor+arcWidth/2, yCoor+arcWidth/2, arcWidth/2, 0, Math.PI * 2, false);
+                                      ctx.clip()
+                                      ctx.drawImage(res.tempFilePath,xCoor, yCoor,arcWidth,arcWidth)
+                                      ctx.restore()
+
+                                      wx.getStorage({
+                                          key: 'userInfo',
+                                          success: response => {
+                                              console.log(response);
+                                              _this.setData({
+                                                  codeUrlId: response.data.id
+                                              });
+                                              _this.data.codeUrlId = response.data.id;
+                                              console.log(_this.data.codeUrlId);
+
+                                              wx.downloadFile({
+                                                  url:
+                                                  'https://yichen.zhagen.ren/dengtao/cardpost?userId=' +
+                                                  _this.data.codeUrlId,
+                                                  success: function(res) {
+                                                      ctx.save();
+                                                      ctx.beginPath();
+                                                      ctx.rect(0, mobile.windowWidth, mobile.windowWidth, mobile.windowWidth);
+                                                      ctx.clip();
+                                                      ctx.drawImage(
+                                                          res.tempFilePath,
+                                                          mobile.windowWidth / 3,
+                                                          mobile.windowWidth / 0.75,
+                                                          mobile.windowWidth / 3,
+                                                          mobile.windowWidth / 3
+                                                      );
+                                                      ctx.restore();
+                                                      ctx.draw();
+
+                                                      wx.hideLoading()
+                                                  }
+                                              });//end of download qrcode
+                                          }
+                                      });//end of getStorage
+                                  }
+                              })//end of download portrait
+                          }
+                      })//end of getImageInfo
+                  }
+              })//end of download background
+
+          }
+      });
+
+  }
+
+
+  createImage(){
+    wx.showLoading({
+      title: '保存图片中'
+    });
+
+    let imageWidth = this.data.imageWidth,
+      imageHeight = this.data.imageHeight;
+
+    wx.canvasToTempFilePath({
+      //将canvas生成图片
+      canvasId: 'gameCanvas',
+      x: 0,
+      y: 0,
+      width: imageWidth,
+      height: imageHeight,
+      destWidth: imageWidth, //截取canvas的宽度
+      destHeight: imageHeight, //截取canvas的高度
+      success: function(res) {
+        wx.saveImageToPhotosAlbum({
+          //保存图片到相册
+          filePath: res.tempFilePath,
+          success: function() {
+            wx.showToast({
+              title: '生成图片成功！',
+              duration: 2000
+            })
+              wx.hideLoading()
+          }
+        });
+      }
+    });
+
+  }
+
+  onLoad() {}
+}
+</script>
+

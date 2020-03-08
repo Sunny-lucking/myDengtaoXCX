@@ -1,0 +1,268 @@
+<style lang="scss">
+    page{
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    .input-wrapper{
+        border-bottom: 1px solid #f3fdee;
+    }
+.category{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 100rpx;
+    overflow: hidden;
+}
+.category-wrapper{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /*min-height: 100%;*/
+    .category-left{
+        width: 180rpx;
+        /*background-color: red;*/
+        /*height: 100%;*/
+        display: flex;
+        flex-direction: column;
+        font-size: 30rpx;
+        .left-item{
+            text-align: center;
+            padding: 20rpx;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f3fdee;
+            width: 100%;
+            height: 50 rpx;
+            /*color: red;*/
+            z-index: 99;
+            /*background-color: gray;*/
+        }
+        .active-item{
+            text-align: center;
+            padding: 20rpx;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f3fdee;
+            width: 100%;
+            height: 50 rpx;
+            color: red;
+            position: relative;
+            overflow: hidden;
+            &::before{
+                position: absolute;
+                content: '';
+                border: 5rpx solid red;
+                left: 0;
+                top: 0;
+                height: 100%;
+                box-sizing: border-box;
+            }
+        }
+        .hover-item{
+            /*background-color: red;*/
+        }
+
+    }
+    .category-right{
+        flex: 1;
+        /*background-color: blue;*/
+        /*height: 100%;*/
+        border-left: 1px solid #f0f3f6;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 130rpx;
+
+        .right-title{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f6f6f6;
+            padding: 5rpx 10rpx;
+            .title-left{
+                font-size: 30rpx;
+            }
+            .title-right{
+                width: 50rpx;
+                height: 50rpx;
+            }
+        }
+        .right-content{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 30rpx;
+            box-sizing: border-box;
+            &:after {
+                content: "";
+                width: 150rpx;
+            }
+            .content-item{
+                margin-top: 10rpx;
+                width: 30%;
+                /*background-color: red;*/
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .item-image{
+                    width: 100%;
+                    height: 150rpx;
+                    /*height: 100%;*/
+                }
+                .item-name{
+                    margin-top: 25rpx;
+                    font-size: 30rpx;
+                    font-weight: lighter;
+                }
+            }
+        }
+
+    }
+}
+    .scroll-view_H{
+        height:100%;
+        margin-bottom: 100rpx;
+    }
+
+</style>
+
+<template>
+<view class="category">
+    <view class="input-wrapper">
+        <van-search
+                bind:change="onInputChange"
+                value="{{ value }}"
+                placeholder="请输入搜索关键词"
+                bind:search="onSearch"
+        />
+    </view>
+   <view class="category-wrapper">
+       <view class="category-left">
+           <repeat for="{{itemList}}" key="index" index="index" item="item" >
+               <view @tap="onClickItem({{index}})" id = "left-item"   class="{{ active === index ? 'active-item':'left-item' }}">{{item.classificationName}}</view>
+           </repeat>
+       </view>
+       <view class="category-right">
+           <scroll-view class="scroll-view_H" scroll-y="true" style="width: 100%">
+               <repeat for="{{itemCurrent}}" key="index" index="index" item="item" >
+                   <view class="right-title" @tap="onClickChoose">
+                       <text class="title-left">{{item.classificationName}}</text>
+                       <!--<image class="title-right" src="./../images/arrow-right.png"></image>-->
+                   </view>
+                   <view class="right-content">
+                       <repeat for="{{item.children}}" key="index" index="index" item="subitem" >
+                       <view class="content-item" @tap="goToThird({{subitem.id}},{{subitem.classificationName}})">
+                           <image class="item-image" src="{{subitem.classificationImg}}"></image>
+                           <text class="item-name">{{subitem.classificationName}}</text>
+                       </view>
+                       </repeat>
+                   </view>
+               </repeat>
+           </scroll-view>
+
+       </view>
+   </view>
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+
+  export default class extends wepy.page {
+    config = {
+        navigationBarTitleText: '分类',
+      usingComponents: {
+        // 'van-sidebar': '../components/vant/sidebar/index',
+        // 'van-sidebar-item': '../components/vant/sidebar-item/index'
+        'van-search': '../components/vant/search/index'
+      }
+    }
+    data = {
+      active: 0,
+      itemList: [], // 左边导航
+      itemProduct: [], // 右边商品所有商品
+      itemCurrent: [], // 右边当前商品
+      product: ['鲨鱼', '果冻', '水果', '宁们'],
+      firstGrade: ['brandId', 'colorId', 'material', 'spaceId', 'style', 'typeId', '']
+    }
+    watch = {
+      itemList (newValue, oldValue) {
+        console.log(`num value: ${oldValue.length} -> ${newValue.length}`)
+      }
+    }
+    onLoad() {
+      var _this = this
+      wepy.showLoading({
+          title: '加载中...'
+      })
+        wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                wx.request({
+                    url: BASEURL + '/dengtao/api/classification/list',
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    success: function (res) {
+                        console.log(res.data.data[0].classificationName + 'S')
+                        console.table(res)
+                        // 将二级目录放进一个数组
+                        var tempProductList = []
+                        for (let i = 0; i < res.data.data.length; i++) {
+                            tempProductList.push(res.data.data[i].children)
+                        }
+                        _this.setData({
+                            itemList: res.data.data,
+                            itemProduct: tempProductList,
+                            itemCurrent: tempProductList[0]   //  解决刚进入页面没内容的问题
+                        })
+                        _this.itemList = res.data.data
+                        _this.itemProduct = tempProductList
+                        //  解决刚进入页面没内容的问题
+                        _this.itemCurrent = _this.itemProduct[0]
+                        wepy.hideLoading()
+                    }
+                })
+            }
+        });
+
+
+    }
+    methods= {
+      goToThird(productId,strname) {
+        console.error(productId)
+        var tempType = this.firstGrade[this.active]
+        wx.navigateTo({
+          url: '../pages/cateThird?type=' + tempType + '&productId=' + productId + '&strname=' + strname
+        })
+      },
+      onClickItem(itemId) {
+        var that = this
+        console.log(itemId)
+        this.active = itemId
+        this.setData({
+          itemCurrent: that.itemProduct[itemId]
+        })
+        that.itemCurrent = that.itemProduct[itemId]
+      }
+    }
+      onSearch() {
+          var that = this
+          console.log('点击搜索商品')
+          console.log(this.value)
+          wx.navigateTo({
+              url: '../pages/search?searchInputValue=' + that.value
+          })
+      }
+      onInputChange(e) {
+          console.log(e);
+          this.setData({
+              value: e.detail
+          });
+          this.value = e.detail
+          console.log(this.value);
+      }
+    onChange(event) {
+      wx.showToast({
+        icon: 'none',
+        title: `切换至第${event.detail}项`
+      })
+    }
+  }
+</script>

@@ -1,0 +1,508 @@
+<style lang="scss">
+page{
+    width: 100%;
+    height: 100%;
+}
+.history{
+    width: 100%;
+    height: 100%;
+    background-color: #ededed;
+    .history-top{
+        /*margin-bottom: 40rpx;*/
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        background-color: #fdfdfe;
+        box-sizing: border-box;
+        .top-item{
+            padding: 10rpx 40rpx;
+            font-size: 30rpx;
+            background-color: #f4f5f8;
+            border-radius: 10rpx;
+        }
+    }
+    .history-item{
+        /*width: 100%;*/
+        .item-time{
+            width: 100%;
+            /*height: 60rpx;*/
+            padding: 10rpx 30rpx;
+            box-sizing: border-box;
+            background-color: #ededed;
+        }
+        .item-info{
+            border-top: 1rpx solid #ccc;
+            background-color: #fdfdfe;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            height: 220rpx;
+            padding: 10rpx;
+            box-sizing: border-box;
+            .item-image-wrapper{
+                width: 200rpx;
+                height: 200rpx;
+                image{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .item-desc{
+                margin-left: 30rpx;
+                font-size: 30rpx;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                flex: 1;
+                .item-name{
+                    overflow:hidden;//一定要写
+                    text-overflow: ellipsis;//超出省略号
+                    display:-webkit-box;//一定要写
+                    -webkit-line-clamp: 2;//控制行数
+                    -webkit-box-orient: vertical;//一定要写
+                }
+                .price-and-btn{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    .btn-delete{
+                        /*width: ;*/
+                        padding: 10rpx 20rpx;
+                        border: 1px solid orangered;
+                        color: orangered;
+                        border-radius: 20rpx;
+                    }
+                }
+            }
+        }
+    }
+}
+.scroll-view_H{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .thirdCate{
+        display: flex;
+        flex-direction: column;
+        padding: 30rpx;
+        box-sizing: border-box;
+        .cate-title{
+            font-size: 34rpx;
+            font-weight: bold;
+            padding-bottom: 20rpx;
+            box-sizing: border-box;
+        }
+        .cate-item-wrapper{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            .cate-item{
+                margin-top: 20rpx;
+                font-size: 30rpx;
+                padding: 10rpx 30rpx;
+                box-sizing: border-box;
+                box-shadow: 0px 0px 1px #888888;
+                margin-left: 30rpx;
+            }
+        }
+    }
+}
+.product-price{
+    color: red;
+    font-size: 32rpx;
+    font-weight: bolder;
+    display: flex;
+    /*display: flex;*/
+    align-items: center;
+    .realPrice{
+        font-size: 46rpx;
+    }
+    .originPrice{
+        color: #ccc;
+        text-decoration: line-through;
+        margin-left: 20rpx;
+    }
+}
+</style>
+
+<template>
+<view class="history">
+
+        <view class="history-top">
+            <!--<view class="top-item" @tap="showAllPopup">全部</view>-->
+            <view class="top-item" @tap="showAllHistory">全部</view>
+            <view class="top-item" @tap="showOnePopup(5)">类型</view>
+            <view class="top-item" @tap="showOnePopup(3)">空间</view>
+            <view class="top-item" @tap="showOnePopup(4)">风格</view>
+            <view class="top-item" @tap="showOnePopup(2)">材质</view>
+        </view>
+
+
+    <repeat wx:for="{{historyProductList}}" wx:key="index" index="index" item="item">
+        <view class="history-item">
+            <view class="item-time">{{item.time}}</view>
+            <repeat wx:for="{{item.productList}}" index="index" wx:key="index" item="item">
+                <view class="item-info">
+                    <view class="item-image-wrapper">
+                        <image src="{{item.productImages[0]}}" mode="aspectFill"></image>
+                    </view>
+                    <view class="item-desc">
+                        <view class="item-name">
+                            {{item.productName}}
+                        </view>
+                        <view class="price-and-btn">
+                            <!--<view class="pricec">￥{{item.marketPrice}}</view>-->
+                            <!--第一版-->
+                            <!--<view class="product-price">￥<text class="realPrice">{{item.retailPrice}}</text> <text class="originPrice"> ￥ {{item.marketPrice}}</text></view>-->
+
+                            <!--第二版-->
+                            <view class="product-price" wx:if="{{item.retailPrice === item.maxRetailPrice}}">￥{{item.maxRetailPrice}}</view>
+                            <view class="product-price" wx:if="{{item.retailPrice !== item.maxRetailPrice}}">￥{{item.retailPrice}}- {{item.maxRetailPrice}}</view>
+                            <view class="btn-delete" @tap="delItemHistory({{item.id}})">删除</view>
+                        </view>
+                    </view>
+                </view>
+            </repeat>
+
+        </view>
+    </repeat>
+
+
+    <van-popup show="{{ isShowAllPopUp }}" bind:close="onClose"  position="top" custom-style="height: 80%;">
+        <scroll-view class="scroll-view_H" scroll-y="true"  style="height:100%;">
+                <repeat wx:for="{{cateAllBoardList[0].children}}" wx:key="index" index="index" item="item">
+                    <view class="thirdCate">
+                        <view class="cate-title">{{item.classificationName}}</view>
+                        <view class="cate-item-wrapper">
+                            <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                                <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                            </repeat>
+                        </view>
+                    </view>
+                </repeat>
+            <repeat wx:for="{{cateAllBoardList[1].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+            <repeat wx:for="{{cateAllBoardList[2].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+            <repeat wx:for="{{cateAllBoardList[3].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+            <repeat wx:for="{{cateAllBoardList[4].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+            <repeat wx:for="{{cateAllBoardList[5].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" wx:key="index" index="index" item="item">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+        </scroll-view>
+
+    </van-popup>
+    <van-popup show="{{ isShowOnePopUp }}" bind:close="onCloseOne"  position="top" custom-style="height: 80%;">
+        <scroll-view class="scroll-view_H" scroll-y="true"  style="height:100%;">
+            <repeat wx:for="{{cateAllBoardList[activeIndex].children}}" wx:key="index" index="index" item="item">
+                <view class="thirdCate">
+                    <view class="cate-title">{{item.classificationName}}</view>
+                    <view class="cate-item-wrapper">
+                        <repeat wx:for="{{item.children}}" item="item" wx:key="index" index="index">
+                            <view class="cate-item" @tap="onClickItem({{item.id}})">{{item.classificationName}}</view>
+                        </repeat>
+                    </view>
+                </view>
+            </repeat>
+        </scroll-view>
+
+    </van-popup>
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '我的足迹',
+        'usingComponents': {
+            'van-popup': '../components/vant/popup/index'
+        }
+    }
+    data = {
+        isShowAllPopUp: false,
+        isShowOnePopUp: false,
+        historyProductList: [],
+        cateAllBoardList:[],
+        activeIndex:2,
+        cateArr :[1,2,3,4]
+    }
+    onLoad(){
+        var that = this
+        wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                wx.request({
+                    url: BASEURL + '/dengtao/api/myTrack/list',
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    success: function (res) {
+                        console.log('我的全部足迹')
+                        console.table(res.data.data.map)
+                        Object.keys(res.data.data.map).map((key,value)=>{
+                            console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                            console.log(res.data.data.map[key]);
+                            that.historyProductList.push({
+                                'time': key,
+                                'productList': res.data.data.map[key]
+                            })
+
+                        })
+                        that.setData({
+                            historyProductList: that.historyProductList
+                        })
+                        that.historyProductList = that.historyProductList
+                        console.log("产品列表");
+                        console.log(that.historyProductList);
+                    }
+                })
+            }
+        })
+        wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                wx.request({
+                    // url: BASEURL + '/dengtao/api/myTrack/classification',
+                    url: BASEURL + '/dengtao/api/classification/list',
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    success: function (res) {
+                        console.log('我的全部足迹------')
+                        console.log("这是我的全部足迹嘛");
+                        console.log(res.data.data);
+                        that.setData({
+                            cateAllBoardList: res.data.data
+                        })
+                        that.cateAllBoardList = res.data.data
+
+                        // for (var i=0;i< res.data.data.length;i++){
+                        //
+                        //     that.cateAllBoardList.push(res.data.data[i].children)
+                        // }
+                        // console.log(that.cateAllBoardList);
+                        // that.setData({
+                        //     cateAllBoardList: that.cateAllBoardList
+                        // })
+                        // that.cateBoardList = that.cateAllBoardList
+                        // console.log("产品列表");
+                        // console.log(that.historyProductList);
+                    }
+                })
+            }
+        })
+
+    }
+    methods= {
+        showAllHistory(){
+            var that = this
+            var tempList = []
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/myTrack/list',
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            wx.showLoading({
+                                title: '加载成功',
+                                duration: 500
+                            })
+                            console.log('我的全部足迹')
+                            console.table(res.data.data.map)
+                            Object.keys(res.data.data.map).map((key,value)=>{
+                                console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                console.log(res.data.data.map[key]);
+                                tempList.push({
+                                    'time': key,
+                                    'productList': res.data.data.map[key]
+                                })
+                            })
+                            that.setData({
+                                historyProductList: tempList,
+                                isShowAllPopUp: false,
+                                isShowOnePopUp: false,
+                            })
+                            that.historyProductList = tempList
+                            that.isShowAllPopUp = false
+                            that.isShowOnePopUp = false
+                            console.log("产品列表");
+                            console.log(tempList);
+                        }
+                    })
+                }
+            })
+        },
+        showAllPopup() {
+            var that = this
+            this.setData({ isShowAllPopUp: true });
+            this.isShowAllPopUp = true
+
+        },
+        showOnePopup(index) {
+            var that = this
+            this.setData({
+                isShowOnePopUp: true ,
+                activeIndex: index
+            });
+            this.isShowOnePopUp = true
+            this.activeIndex = index
+            console.log("我的孩子");
+            console.table(that.cateAllBoardList)
+        },
+
+
+        onClose() {
+            this.setData({ isShowAllPopUp: false });
+            this.isShowAllPopUp = false
+        },
+        onCloseOne() {
+            this.setData({ isShowOnePopUp: false });
+            this.isShowOnePopUp = false
+        },
+        onClickItem(id){
+            console.log("看一下ID是多少啊");
+            console.log(id);
+            var that =this
+            var tempList = []
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/myTrack/listSelect/'+id,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            console.log('我的全部足迹')
+                            console.table(res.data.data.map)
+                            Object.keys(res.data.data.map).map((key,value)=>{
+                                console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                console.log(res.data.data.map[key]);
+                                tempList.push({
+                                    'time': key,
+                                    'productList': res.data.data.map[key]
+                                })
+
+                            })
+                            that.setData({
+                                historyProductList: tempList,
+                                isShowAllPopUp: false,
+                                isShowOnePopUp: false,
+                            })
+                            that.historyProductList = tempList
+                            that.isShowAllPopUp = false
+                            that.isShowOnePopUp = false
+                            wx.showToast({
+                              title: '请求成功',
+                              duration: 1000
+                            })
+                            console.log("产品列表");
+                            console.log(tempList);
+                        }
+                    })
+                }
+            })
+        },
+        delItemHistory(id){
+            var that = this
+            var tempList = []
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/myTrack/delete/'+id,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        method: 'post',
+                        success: function (res) {
+                            wepy.showLoading({
+                                title: '删除中...'
+                            })
+                            wx.getStorage({
+                                key: 'session-id',
+                                success: response => {
+                                    wepy.hideLoading()
+                                    wx.showToast({
+                                      title: '删除成功'
+
+                                    })
+                                    wx.request({
+                                        url: BASEURL + '/dengtao/api/myTrack/list',
+                                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                        success: function (res) {
+                                            console.log('删除后我的全部足迹')
+                                            console.table(res.data.data)
+                                            if(res.data.data){
+                                                Object.keys(res.data.data.map).map((key,value)=>{
+                                                    tempList.push({
+                                                        'time': key,
+                                                        'productList': res.data.data.map[key]
+                                                    })
+
+                                                })
+                                                that.setData({
+                                                    historyProductList: tempList
+                                                })
+                                                that.historyProductList = tempList
+
+                                            }else{
+                                                that.setData({
+                                                    historyProductList: null
+                                                })
+                                                that.historyProductList = null
+                                            }
+
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+
+    }
+  }
+</script>

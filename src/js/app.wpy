@@ -1,0 +1,163 @@
+<style lang='less'>
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import {BASEURL} from "./utils/global";
+
+export default class extends wepy.app {
+  config = {
+    enablePullDownRefresh: true,
+    // 不配成dark的话三个加载中的点会看不到，其实是出来了，只是三个点是白色的，如果你的页面背景也是白的，那就看不出效果了
+    backgroundTextStyle: 'dark',
+    pages: [
+        'pages/home',
+        'pages/smart',
+        'pages/cateThird',
+        'pages/detail',
+        'pages/member',
+        'pages/memHistory',
+      'pages/memCollection',
+      'pages/search',
+      'pages/category',
+      'pages/Categorys',
+      'pages/memCenter',
+      'pages/memGroup',
+      'pages/login',
+      'pages/index',
+      'pages/cart',
+      'pages/memPoster'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      'color': '#999999',
+      'selectedColor': '#ff6a3c',
+      'backgroundColor': '#ffffff',
+      'borderStyle': 'black',
+      'list': [{
+        'pagePath': 'pages/home',
+        'text': '首页',
+        'iconPath': 'images/home.png',
+        'selectedIconPath': 'images/home_selected.png'
+      }, {
+        'pagePath': 'pages/category',
+        'text': '分类',
+        'iconPath': 'images/category.png',
+        'selectedIconPath': 'images/category_selected.png'
+      }, {
+        'pagePath': 'pages/cart',
+        'text': '购物车',
+        'iconPath': 'images/cart-Empty.png',
+        'selectedIconPath': 'images/cart-Empty_selected.png'
+      }, {
+        'pagePath': 'pages/member',
+        'text': '会员中心',
+        'iconPath': 'images/account.png',
+        'selectedIconPath': 'images/account_selected.png'
+      }]
+    }
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+
+  onLaunch() {
+    this.testAsync()
+  //    这是我的代码
+      var that = this
+      wx.login({
+          success: function (res) {
+              console.log(res)
+              wx.request({
+                  url: BASEURL + '/dengtao/miniprogram/login.do',
+                  method: 'post',
+                  data: {
+                      js_code: res.code
+                  },
+                  success: function (res) {
+                      console.log('huode')
+                      console.log(res.data.data.sessionId)
+                      wx.setStorageSync('session-id', res.data.data.sessionId)
+                      if (res.data.code === 1) {
+                          // that.bindGetUserInfo(res)
+                          wepy.hideLoading()
+                          wx.request({
+                              url: BASEURL + '/dengtao/miniprogram/getSessionUser.do',
+                              header: { 'Cookie': 'JSESSIONID=' + res.data.data.sessionId },
+                              method: 'get',
+                              success: function (res) {
+                                  console.log('sddsdsd')
+                                  console.log(res.data.data)
+                                  wx.setStorage({
+                                      key: 'userInfo',
+                                      data: res.data.data
+                                  })
+                                  // that.setData({
+                                  //     userInfo: res.data.data
+                                  // })
+                                  that.userInfo = res.data.data
+                              }
+                          })
+                      }
+                      else{
+                          // wx.showToast({
+                          //     title: '您还未登陆',
+                          //     icon: 'warn',
+                          //     duration: 2000
+                          // })
+                      }
+                  }
+              })
+          },
+          fail: function (res) {
+              console.log(res)
+          }
+      })
+  }
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

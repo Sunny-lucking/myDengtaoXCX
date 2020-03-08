@@ -1,0 +1,477 @@
+<style lang="scss">
+ page{
+     width: 100%;
+     height: 100%;
+ }
+.collection{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .collection-top{
+        width: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        z-index: 99;
+
+        .top-item{
+            padding: 20rpx;
+            flex: 1;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .active-item{
+            padding: 20rpx;
+            flex: 1;
+            text-align: center;
+            color: red;
+            border-bottom: 2px solid red;
+            box-sizing: border-box;
+        }
+    }
+    .collection-content{
+        margin-top: 100rpx;
+        width: 100%;
+        .history-item{
+            /*width: 100%;*/
+            .item-time{
+                width: 100%;
+                /*height: 60rpx;*/
+                padding: 10rpx 30rpx;
+                box-sizing: border-box;
+            }
+            .item-info{
+                border-bottom: 1rpx solid #ccc;
+                background-color: #fdfdfe;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                height: 220rpx;
+                padding: 10rpx;
+                box-sizing: border-box;
+                .item-image-wrapper{
+                    width: 200rpx;
+                    height: 200rpx;
+                    image{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .item-desc{
+                    margin-left: 30rpx;
+                    font-size: 30rpx;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    flex: 1;
+                    .item-name{
+                        overflow:hidden;//一定要写
+                        text-overflow: ellipsis;//超出省略号
+                        display:-webkit-box;//一定要写
+                        -webkit-line-clamp: 2;//控制行数
+                        -webkit-box-orient: vertical;//一定要写
+                    }
+                    .price-and-btn{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        .btn-delete{
+                            /*width: ;*/
+                            padding: 10rpx 20rpx;
+                            border: 1px solid orangered;
+                            color: orangered;
+                            border-radius: 20rpx;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+ .product-price{
+     color: red;
+     font-size: 32rpx;
+     font-weight: bolder;
+     display: flex;
+     /*display: flex;*/
+     align-items: center;
+     .realPrice{
+         font-size: 46rpx;
+     }
+     .originPrice{
+         color: #ccc;
+         text-decoration: line-through;
+         margin-left: 20rpx;
+     }
+ }
+</style>
+
+<template>
+<view class="collection">
+    <view class="collection-top">
+        <repeat for="{{topNavItemList}}" index="index" item="item" key="index">
+            <view class="{{activeItemIndex ===index?'active-item':'top-item'}}" @tap="onClickTabItem({{index}})">{{item}}</view>
+        </repeat>
+    </view>
+    <view class="collection-content">
+        <repeat for="{{favoriteProducts}}" index="index" key="index" item="item">
+            <view class="history-item">
+                <view class="item-time">{{item.time}}</view>
+                <repeat for="{{item.productList}}" index="index" key="index" item="item">
+                    <view class="item-info">
+                        <view class="item-image-wrapper">
+                            <image src="{{item.productImgs[0]}}" mode="aspectFill"></image>
+                        </view>
+                        <view class="item-desc">
+                            <view class="item-name">
+                                {{item.description}}
+                            </view>
+                            <view class="price-and-btn">
+                                <!--<view class="pricec">￥5250.00</view>-->
+                                <!--第一版-->
+                                <!--<view class="product-price">￥<text class="realPrice">{{item.retailPrice}}</text> <text class="originPrice"> ￥ {{item.marketPrice}}</text></view>-->
+                                <!--第二版-->
+                                <!--第二版-->
+                                <view class="product-price" wx:if="{{item.retailPrice === item.maxRetailPrice}}">￥{{item.maxRetailPrice}}</view>
+                                <view class="product-price" wx:if="{{item.retailPrice !== item.maxRetailPrice}}">￥{{item.retailPrice}}- {{item.maxRetailPrice}}</view>
+
+                                <view class="btn-delete" @tap="onClickForCancelCol({{item.id}})">取消收藏</view>
+                            </view>
+                        </view>
+                    </view>
+                </repeat>
+            </view>
+        </repeat>
+
+    </view>
+
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '我的收藏'
+    }
+      data= {
+          activeItemIndex: 0,
+          topNavItemList: ['全部', '本周', '本月', '本年'],
+          favoriteProducts: []
+      }
+    onLoad() {
+        var that = this
+        wepy.showLoading({ title: '加载中...' })
+      wx.getStorage({
+        key: 'session-id',
+        success: response => {
+          wx.request({
+            url: BASEURL + '/dengtao/api/favorite/list',
+            header: { 'Cookie': 'JSESSIONID=' + response.data },
+            // success: function (res) {
+            //     that.setData({
+            //         favoriteProducts: res.data.data
+            //     })
+            //     that.favoriteProducts = res.data.data
+            //     console.log("获得到了全部收藏");
+            //     wepy.hideLoading()
+            //     console.log(res)
+            // }
+              success: function (res) {
+                  console.log('我的全部足迹')
+                  console.table(res.data.data.map)
+                  wepy.hideLoading();
+                  Object.keys(res.data.data.map).map((key,value)=>{
+                      console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                      console.log(res.data.data.map[key]);
+                      that.favoriteProducts.push({
+                          'time': key,
+                          'productList': res.data.data.map[key]
+                      })
+
+                  })
+                  that.setData({
+                      favoriteProducts: that.favoriteProducts
+                  })
+                  that.favoriteProducts = that.favoriteProducts
+                  console.log("产品列表");
+                  console.log(that.favoriteProducts);
+              }
+          })
+        }
+      })
+    }
+      // 触发底部事件
+      onReachBottom(){
+          var that = this;
+          console.log("1111");
+      }
+    methods= {
+        onClickForCancelCol(itemID){
+            console.log("IDDDDD");
+            console.log(itemID);
+            var that = this
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/favorite/cancel/'+ itemID,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        method: 'post',
+                        success: function (res) {
+                            console.log(res);
+                            console.log(res.data.code);
+                            if (res.data.code === 1){
+                                wx.request({
+                                    url: BASEURL + '/dengtao/api/product/getProduct/' + itemID,
+                                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                    success: function (res) {
+                                        wx.getStorage({
+                                            key: 'session-id',
+                                            success: response => {
+                                                wx.request({
+                                                    url: BASEURL + '/dengtao/api/favorite/list',
+                                                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                                    // success: function (res) {
+                                                    //     that.setData({
+                                                    //         favoriteProducts: res.data.data
+                                                    //     })
+                                                    //     that.favoriteProducts = res.data.data
+                                                    //     console.log("获得到了全部收藏");
+                                                    //     wepy.hideLoading()
+                                                    //     console.log(res)
+                                                    // }
+                                                    success: function (res) {
+                                                        console.log('我的全部足迹')
+                                                        console.table(res.data.data.map)
+                                                        that.setData({
+                                                            favoriteProducts: []
+                                                        })
+                                                        that.favoriteProducts = []
+                                                        wepy.hideLoading();
+                                                        Object.keys(res.data.data.map).map((key,value)=>{
+                                                            console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                                            console.log(res.data.data.map[key]);
+                                                            that.favoriteProducts.push({
+                                                                'time': key,
+                                                                'productList': res.data.data.map[key]
+                                                            })
+
+                                                        })
+                                                        that.setData({
+                                                            favoriteProducts: that.favoriteProducts
+                                                        })
+                                                        that.favoriteProducts = that.favoriteProducts
+                                                        console.log("产品列表");
+                                                        console.log(that.favoriteProducts);
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+
+                                })
+                                wx.showToast({
+                                    title: '已取消收藏',
+                                    icon: 'success'
+                                })
+                            }
+                        }
+                    })
+                }
+            });
+        },
+        onClickTabItem(itemIndex) {
+            var that = this
+            this.setData({
+                activeItemIndex: itemIndex
+            })
+            this.activeItemIndex = itemIndex
+            if (itemIndex === 0){
+                wx.getStorage({
+                    key: 'session-id',
+                    success: response => {
+                        wepy.showLoading({ title: '加载中...' })
+                        wx.request({
+                            url: BASEURL + '/dengtao/api/favorite/list',
+                            header: { 'Cookie': 'JSESSIONID=' + response.data },
+                            // success: function (res) {
+                            //     that.setData({
+                            //         favoriteProducts: res.data.data
+                            //     })
+                            //     that.favoriteProducts = res.data.data
+                            //     console.log("获得到了全部收藏");
+                            //     wepy.hideLoading()
+                            //     console.log(res)
+                            // }
+                            success: function (res) {
+                                console.log('我的全部足迹')
+                                console.table(res.data.data.map)
+                                that.setData({
+                                    favoriteProducts: []
+                                })
+                                that.favoriteProducts = []
+                                wepy.hideLoading();
+                                Object.keys(res.data.data.map).map((key,value)=>{
+                                    console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                    console.log(res.data.data.map[key]);
+                                    that.favoriteProducts.push({
+                                        'time': key,
+                                        'productList': res.data.data.map[key]
+                                    })
+
+                                })
+                                that.setData({
+                                    favoriteProducts: that.favoriteProducts
+                                })
+                                that.favoriteProducts = that.favoriteProducts
+                                console.log("产品列表");
+                                console.log(that.favoriteProducts);
+                            }
+                        })
+                    }
+                })
+            }else if(itemIndex === 2){
+                wx.getStorage({
+                    key: 'session-id',
+                    success: response => {
+                        wepy.showLoading({ title: '加载中...' })
+                        wx.request({
+                            url: BASEURL + '/dengtao/api/favorite/monthList',
+                            header: { 'Cookie': 'JSESSIONID=' + response.data },
+                            // success: function (res) {
+                            //     that.setData({
+                            //         favoriteProducts: res.data.data
+                            //     })
+                            //     that.favoriteProducts = res.data.data
+                            //     console.log("获得到了本月收藏");
+                            //     wepy.hideLoading()
+                            //     console.log(res)
+                            // }
+                            success: function (res) {
+                                console.log('我的全部足迹')
+                                console.table(res.data.data.map)
+                                that.setData({
+                                    favoriteProducts: []
+                                })
+                                that.favoriteProducts = []
+                                wepy.hideLoading();
+                                Object.keys(res.data.data.map).map((key,value)=>{
+                                    console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                    console.log(res.data.data.map[key]);
+                                    that.favoriteProducts.push({
+                                        'time': key,
+                                        'productList': res.data.data.map[key]
+                                    })
+
+                                })
+                                that.setData({
+                                    favoriteProducts: that.favoriteProducts
+                                })
+                                that.favoriteProducts = that.favoriteProducts
+                                console.log("产品列表");
+                                console.log(that.favoriteProducts);
+                            }
+                        })
+                    }
+                })
+            }else if(itemIndex === 1){
+                wx.getStorage({
+                    key: 'session-id',
+                    success: response => {
+                        wepy.showLoading({ title: '加载中...' })
+                        wx.request({
+                            url: BASEURL + '/dengtao/api/favorite/weekList',
+                            header: { 'Cookie': 'JSESSIONID=' + response.data },
+                            // success: function (res) {
+                            //     that.setData({
+                            //         favoriteProducts: res.data.data
+                            //     })
+                            //     that.favoriteProducts = res.data.data
+                            //     console.log("获得到了本周收藏");
+                            //     wepy.hideLoading()
+                            //     console.log(res)
+                            // }
+                            success: function (res) {
+                                console.log('我的全部足迹')
+                                console.table(res.data.data.map)
+                                that.setData({
+                                    favoriteProducts: []
+                                })
+                                that.favoriteProducts = []
+                                wepy.hideLoading();
+                                Object.keys(res.data.data.map).map((key,value)=>{
+                                    console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                    console.log(res.data.data.map[key]);
+                                    that.favoriteProducts.push({
+                                        'time': key,
+                                        'productList': res.data.data.map[key]
+                                    })
+
+                                })
+                                that.setData({
+                                    favoriteProducts: that.favoriteProducts
+                                })
+                                that.favoriteProducts = that.favoriteProducts
+                                console.log("产品列表");
+                                console.log(that.favoriteProducts);
+                            }
+                        })
+                    }
+                })
+            }else{
+                wx.getStorage({
+                    key: 'session-id',
+                    success: response => {
+                        wepy.showLoading({ title: '加载中...' })
+                        wx.request({
+                            url: BASEURL + '/dengtao/api/favorite/yearList',
+                            header: { 'Cookie': 'JSESSIONID=' + response.data },
+                            // success: function (res) {
+                            //     that.setData({
+                            //         favoriteProducts: res.data.data
+                            //     })
+                            //     that.favoriteProducts = res.data.data
+                            //     console.log("获得到了本年收藏");
+                            //     wepy.hideLoading()
+                            //     console.log(res)
+                            // }
+                            success: function (res) {
+                                console.log('我的全部足迹')
+                                console.table(res.data.data.map)
+                                that.setData({
+                                    favoriteProducts: []
+                                })
+                                that.favoriteProducts = []
+                                wepy.hideLoading();
+                                Object.keys(res.data.data.map).map((key,value)=>{
+                                    console.log(key,value) // key=>属性名  obj[key]=>属性值  index=>数组索引值
+                                    console.log(res.data.data.map[key]);
+                                    that.favoriteProducts.push({
+                                        'time': key,
+                                        'productList': res.data.data.map[key]
+                                    })
+
+                                })
+                                that.setData({
+                                    favoriteProducts: that.favoriteProducts
+                                })
+                                that.favoriteProducts = that.favoriteProducts
+                                console.log("产品列表");
+                                console.log(that.favoriteProducts);
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    }
+  }
+</script>

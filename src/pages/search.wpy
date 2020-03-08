@@ -1,0 +1,1000 @@
+<style lang="scss">
+/*page{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+/*}*/
+/*.category-wrapper{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+/*}*/
+/*.cate-top{*/
+    /*!*position: fixed;*!*/
+    /*!*left: 0;*!*/
+    /*!*top: 0;*!*/
+    /*background-color: #fff;*/
+    /*padding: 20rpx 60rpx;*/
+    /*box-sizing: border-box;*/
+    /*width: 100%;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+
+    /*.nav-tab{*/
+        /*display: flex;*/
+        /*flex-direction: row;*/
+        /*justify-content: space-around;*/
+        /*border-top: 1rpx solid #ccc;*/
+        /*.tab-item{*/
+            /*font-size: 32rpx;*/
+            /*padding: 10px;*/
+            /*border-bottom: 1rpx solid #ccc;*/
+            /*text{*/
+                /*!*border-bottom: 1rpx solid #ccc;*!*/
+            /*}*/
+        /*}*/
+    /*}*/
+/*}*/
+/*.cate-third{*/
+    /*margin-top: 20%;*/
+    /*background-color: #f3fdee;*/
+    /*width: 100%;*/
+    /*!*height: 80%;*!*/
+/*}*/
+/*.product-list{*/
+    /*padding: 10rpx;*/
+    /*box-sizing: border-box;*/
+    /*display: flex;*/
+    /*flex-wrap: wrap;*/
+    /*justify-content: space-between;*/
+    /*.product-item{*/
+        /*background-color: #fff;*/
+        /*margin-top: 5rpx;*/
+        /*width: 49.9%;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*box-sizing: border-box;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*image{*/
+            /*width: 100%;*/
+            /*height: 400rpx;*/
+        /*}*/
+        /*.product-desc{*/
+            /*margin-top: 20rpx;*/
+            /*padding: 0 20rpx;*/
+            /*box-sizing: border-box;*/
+            /*font-size: 30rpx;*/
+            /*display: -webkit-box;*/
+            /*-webkit-box-orient: vertical;*/
+            /*-webkit-line-clamp: 2; //需要控制的文本行数*/
+            /*overflow: hidden;*/
+        /*}*/
+        /*.product-price{*/
+            /*padding: 10rpx;*/
+            /*box-sizing: border-box;*/
+            /*color: red;*/
+            /*font-size: 28rpx;*/
+            /*font-weight: bolder;*/
+            /*span{*/
+                /*border: 1px solid red;*/
+                /*padding: 0 5rpx;*/
+                /*box-sizing: border-box;*/
+                /*border-radius: 10rpx;*/
+            /*}*/
+        /*}*/
+    /*}*/
+/*}*/
+/*.scroll-view_H{*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+
+/*}*/
+/*.price-wrapper{*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*.price-top{*/
+        /*display: flex;*/
+        /*flex-wrap: wrap;*/
+        /*padding: 30rpx;*/
+        /*box-sizing: border-box;*/
+        /*.price-item{*/
+            /*padding: 10rpx;*/
+            /*box-sizing: border-box;*/
+            /*font-size: 30rpx;*/
+            /*border: 1px solid #ccc;*/
+            /*margin-left: 20rpx;*/
+            /*margin-top: 20rpx;*/
+            /*border-radius: 5rpx;*/
+            /*font-weight: bolder;*/
+        /*}*/
+        /*.active-item{*/
+            /*padding: 10rpx;*/
+            /*box-sizing: border-box;*/
+            /*font-size: 30rpx;*/
+            /*border: 1px solid #ccc;*/
+            /*margin-left: 20rpx;*/
+            /*margin-top: 20rpx;*/
+            /*border-radius: 5rpx;*/
+            /*font-weight: bolder;*/
+            /*background-color: orangered;*/
+            /*color: white;*/
+        /*}*/
+    /*}*/
+    /*.price-bottom{*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*.self-title{*/
+            /*padding: 10rpx;*/
+            /*box-sizing: border-box;*/
+            /*font-size: 32rpx;*/
+        /*}*/
+        /*.seft-input{*/
+            /*display: flex;*/
+            /*flex-direction: row;*/
+            /*justify-content: space-between;*/
+            /*align-items: center;*/
+            /*padding: 20rpx;*/
+            /*box-sizing: border-box;*/
+            /*input{*/
+                /*padding: 5rpx 10rpx;*/
+                /*border: 1px solid #ccc;*/
+                /*font-size: 30rpx;*/
+            /*}*/
+        /*}*/
+        /*.btn-area{*/
+            /*position: fixed;*/
+            /*left: 0;*/
+            /*bottom: 0;*/
+            /*display: flex;*/
+            /*flex-direction: row;*/
+            /*width: 100%;*/
+            /*button{*/
+                /*background: transparent;*/
+                /*width: 50%;*/
+                /*height: 100rpx;*/
+                /*line-height: 100rpx;*/
+                /*font-size: 32rpx;*/
+                /*font-weight: bolder;*/
+            /*}*/
+        /*}*/
+    /*}*/
+/*}*/
+/*.category-popup{*/
+    /*width: 500rpx;*/
+    /*height: 800rpx;*/
+    /*display: flex;*/
+    /*.cate-left{*/
+        /*height: 100%;*/
+        /*width: 30%;*/
+        /*background-color: #f5f5f5;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*.left-item{*/
+            /*font-size: 32rpx;*/
+            /*padding: 30rpx 20rpx;*/
+            /*box-sizing: border-box;*/
+        /*}*/
+        /*.active-left-item{*/
+            /*font-size: 32rpx;*/
+            /*padding: 30rpx 20rpx;*/
+            /*box-sizing: border-box;*/
+            /*background-color: #ffffff;*/
+            /*color: orangered;*/
+        /*}*/
+    /*}*/
+    /*.cate-right{*/
+        /*height: 100%;*/
+        /*width: 70%;*/
+        /*background-color: #fdfdfe;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*.right-item{*/
+            /*font-size: 32rpx;*/
+            /*padding: 30rpx 20rpx;*/
+            /*box-sizing: border-box;*/
+        /*}*/
+    /*}*/
+/*}*/
+
+page{
+    width: 100%;
+    height: 100%;
+    background-color: #f2f3f5;
+}
+.cate-third{
+    background-color: #f2f3f5;
+    width: 100%;
+    height: 100%;
+    .cate-top{
+        background-color: #fff;
+        padding: 20rpx 60rpx 0 60rpx;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .input-wrapper{
+            margin-bottom: 10rpx;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #eeeeee;
+            border-radius: 30rpx;
+            padding: 10rpx 20rpx;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            .image-wrapper{
+                width: 50rpx;
+                height: 50rpx;
+                image{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        .nav-tab{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            border-top: 1rpx solid #ccc;
+            .tab-item{
+                font-size: 32rpx;
+                padding: 10px;
+                position: relative;
+                &:after{
+                    content: '';
+                    position: absolute;
+                    right: -45rpx;
+                    bottom: 30rpx;
+                    width: 1rpx;
+                    height: 25rpx;
+                    border-right: 1px solid #ccc;
+                }
+
+            }
+            .tab-item:last-child{
+                &:after{
+                    content: '';
+                    position: absolute;
+                    right: -40rpx;
+                    bottom: 30rpx;
+                    width: 1rpx;
+                    height: 25rpx;
+                    border: none;
+                }
+
+            }
+        }
+    }
+}
+.product-list{
+    padding: 10rpx;
+    margin-bottom: 120rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .product-item{
+        background-color: #fff;
+        margin-top: 5rpx;
+        width: 49.9%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        image{
+            width: 100%;
+            height: 400rpx;
+        }
+        .product-desc{
+            margin-top: 20rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; //需要控制的文本行数
+            overflow: hidden;
+        }
+        .product-price{
+            padding: 10rpx;
+            box-sizing: border-box;
+            color: red;
+            font-size: 28rpx;
+            font-weight: bolder;
+            span{
+                border: 1px solid red;
+                padding: 0 5rpx;
+                box-sizing: border-box;
+                border-radius: 10rpx;
+            }
+        }
+    }
+}
+.product-list{
+    padding: 10rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .product-item{
+        background-color: #fff;
+        margin-top: 5rpx;
+        width: 49.9%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        image{
+            width: 100%;
+            height: 400rpx;
+        }
+        .product-desc{
+            margin-top: 20rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; //需要控制的文本行数
+            overflow: hidden;
+        }
+        .product-price{
+            padding: 10rpx;
+            box-sizing: border-box;
+            color: red;
+            font-size: 28rpx;
+            font-weight: bolder;
+            .origin-price{
+                text-decoration: line-through;
+                color: #ccc;
+                margin-right: 20rpx;
+                font-weight: normal;
+            }
+            span{
+                font-size: 20rpx;
+                border: 1px solid red;
+                padding: 0 5rpx;
+                box-sizing: border-box;
+                border-radius: 10rpx;
+            }
+        }
+    }
+}
+.scroll-view_H{
+    height: 100%;
+    width: 100%;
+
+}
+.price-wrapper{
+    display: flex;
+    flex-direction: column;
+    .price-top{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 30rpx;
+        box-sizing: border-box;
+        .price-item{
+            padding: 10rpx;
+            box-sizing: border-box;
+            font-size: 25rpx;
+            border: 1px solid #ccc;
+            margin-left: 20rpx;
+            margin-top: 20rpx;
+            border-radius: 5rpx;
+            font-weight: bolder;
+            box-shadow: 0px 0px 1px #888888;
+        }
+        .active-item{
+            padding: 10rpx;
+            box-sizing: border-box;
+            font-size: 25rpx;
+            border: 1px solid #ccc;
+            margin-left: 20rpx;
+            margin-top: 20rpx;
+            border-radius: 5rpx;
+            font-weight: bolder;
+            background-color: orangered;
+            color: white;
+            box-shadow: 0px 0px 2px yellow;
+        }
+    }
+    .price-bottom{
+        display: flex;
+        flex-direction: column;
+        .self-title{
+            padding: 10rpx;
+            box-sizing: border-box;
+            font-size: 32rpx;
+        }
+        .seft-input{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20rpx;
+            box-sizing: border-box;
+            input{
+                padding: 5rpx 10rpx;
+                border: 1px solid #ccc;
+                font-size: 30rpx;
+            }
+        }
+        .btn-area{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            button{
+                background: transparent;
+                width: 50%;
+                height: 100rpx;
+                line-height: 100rpx;
+                font-size: 32rpx;
+                font-weight: bolder;
+            }
+        }
+    }
+}
+/*分类板块*/
+.category-popup{
+    z-index: 99;
+    width: 600rpx;
+    height: 900rpx;
+    display: flex;
+    /*.cate-left{*/
+    /*height: 100%;*/
+    /*width: 30%;*/
+    /*background-color: #f5f5f5;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*.left-item{*/
+    /*font-size: 32rpx;*/
+    /*padding: 30rpx 20rpx;*/
+    /*box-sizing: border-box;*/
+    /*}*/
+    /*.active-left-item{*/
+    /*font-size: 32rpx;*/
+    /*padding: 30rpx 20rpx;*/
+    /*box-sizing: border-box;*/
+    /*background-color: #ffffff;*/
+    /*color: orangered;*/
+    /*}*/
+    /*}*/
+    /*.cate-right{*/
+    /*height: 100%;*/
+    /*width: 70%;*/
+    /*background-color: #fdfdfe;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*.right-item{*/
+    /*font-size: 32rpx;*/
+    /*padding: 30rpx 20rpx;*/
+    /*box-sizing: border-box;*/
+    /*}*/
+    /*}*/
+}
+
+.category-wrapper{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /*min-height: 100%;*/
+    .category-left{
+        width: 100rpx;
+        /*background-color: red;*/
+        /*height: 100%;*/
+        display: flex;
+        flex-direction: column;
+        font-size: 30rpx;
+        .left-item{
+            text-align: center;
+            padding: 20rpx;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f3fdee;
+            width: 100%;
+            height: 50 rpx;
+            /*color: red;*/
+            z-index: 99;
+            /*background-color: gray;*/
+        }
+        .active-item{
+            text-align: center;
+            padding: 20rpx;
+            box-sizing: border-box;
+            border-bottom: 1px solid #f3fdee;
+            width: 100%;
+            height: 50 rpx;
+            color: red;
+            position: relative;
+            overflow: hidden;
+            &::before{
+                position: absolute;
+                content: '';
+                border: 5rpx solid red;
+                left: 0;
+                top: 0;
+                height: 100%;
+                box-sizing: border-box;
+            }
+        }
+        .hover-item{
+            /*background-color: red;*/
+        }
+
+    }
+    .category-right{
+        flex: 1;
+        /*background-color: blue;*/
+        /*height: 100%;*/
+        border-left: 1px solid #f0f3f6;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 130rpx;
+
+        .right-title{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f6f6f6;
+            padding: 5rpx 10rpx;
+            .title-left{
+                font-size: 30rpx;
+            }
+            .title-right{
+                width: 50rpx;
+                height: 50rpx;
+            }
+        }
+        .right-content{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 30rpx;
+            box-sizing: border-box;
+            &:after {
+                content: "";
+                width:120rpx;
+            }
+            .content-item{
+                margin-top: 10rpx;
+                width: 30%;
+                /*background-color: red;*/
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .item-image{
+                    width: 150rpx;
+                    height: 150rpx;
+                    /*height: 100%;*/
+                }
+                .item-name{
+                    margin-top: 25rpx;
+                    font-size: 30rpx;
+                    font-weight: lighter;
+                }
+            }
+        }
+
+    }
+}
+.scroll-view_H{
+    height:100%;
+    margin-bottom: 100rpx;
+}
+</style>
+
+<template>
+    <view class="cate-third">
+        <view class="cate-top">
+            <van-popup
+                    show="{{ showPrice }}"
+                    position="top"
+                    custom-style="height: 40%;"
+                    bind:close="onPriceClose"
+            >
+                <view>
+                    <form bindsubmit="formSubmit" bindreset="formReset">
+                        <view class="price-wrapper">
+                            <view class="price-top">
+                                <repeat for="{{priceList}}" key="index" index="index" item="item">
+                                    <view class="{{ activePrice===index? 'active-item':'price-item' }}" @tap="onClickItem({{index}})">{{item.minPrice}}-{{item.maxPrice}}</view>
+                                </repeat>
+                            </view>
+                            <view class="price-bottom">
+                                <text class="self-title">自定义价格</text>
+                                <view class="seft-input section">
+                                    <input type="text" placeholder="最小值" value="{{minPrice}}" name="minPrice"/>-
+                                    <input type="text" placeholder="最大值" value="{{maxPrice}}" name="maxPrice"/>
+                                </view>
+                                <view class="btn-area">
+                                    <button class="reset"  formType="reset">重置</button>
+                                    <button class="submit" formType="submit">完成</button>
+                                </view>
+                            </view>
+                        </view>
+                    </form>
+                </view>
+
+            </van-popup>
+            <view class="nav-tab">
+                <!--<view class="tab-item">-->
+                <!--<text @tap="showCategoryPopup">分类</text>-->
+                <!--</view>-->
+                <view class="tab-item">
+                    <view class="section">
+                        <picker bindchange="bindPickerSelect" value="{{index}}" range="{{arraySelect}}">
+                            <view class="picker">
+                                筛选
+                            </view>
+                        </picker>
+                    </view>
+                </view>
+                <view class="tab-item">
+                    <view class="section">
+                        <picker bindchange="bindPickerSort" value="{{index}}" range="{{arraySort}}">
+                            <view class="picker">
+                                排序
+                            </view>
+                        </picker>
+                    </view>
+                </view>
+                <view class="tab-item">
+                    <text @tap="showPricePopup">价格</text>
+                </view>
+            </view>
+        </view>
+
+        <scroll-view class="scroll-view_H" scroll-y="true" style="width: 100%" bindscrolltolower="getMoreProducts" scroll-top='{{topNum}}'>
+            <view class="product-list">
+                <repeat for="{{productList}}" key="index" index="index" item="item" >
+                    <view class="product-item" @tap="goToDetail({{item.id}})">
+                        <image src="{{item.productImages[0]}}" alt="mei"></image>
+                        <view class="product-desc">{{item.productName}}</view>
+                        <!--第一版-->
+                        <!--<view class="product-price">￥{{item.retailPrice}} <text class="origin-price">￥{{item.marketPrice}}</text>-->
+                        <!--</view>-->
+
+
+                        <!--第二版-->
+                        <view class="product-price" wx:if="{{item.retailPrice === item.maxRetailPrice}}">￥{{item.maxRetailPrice}}</view>
+                        <view class="product-price" wx:if="{{item.retailPrice !== item.maxRetailPrice}}">￥{{item.retailPrice}}- {{item.maxRetailPrice}}</view>
+                    </view>
+                </repeat>
+            </view>
+        </scroll-view>
+
+    </view>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  export default class extends wepy.page {
+    config = {
+      'usingComponents': {
+        'van-popup': '../components/vant/popup/index'
+      },
+        'disableScroll': true,
+    }
+    data= {
+        pageNum: 1,
+        topNum:0,
+        // 价格板块
+        minPrice: '',
+        maxPrice: '',
+        activePrice: -1,
+        showPrice: false,
+        priceList: [
+            { 'minPrice': 0, 'maxPrice': 499 },
+            { 'minPrice': 500, 'maxPrice': 1999 },
+            { 'minPrice': 2000, 'maxPrice': 4999 },
+            { 'minPrice': 5000, 'maxPrice': 9999 },
+            { 'minPrice': 10000, 'maxPrice': 19999 },
+            { 'minPrice': 20000, 'maxPrice': '' }
+        ],
+        // 分类板块
+        activeIndex: 0,
+        rightItemCurrent: null,
+        leftItemList: ['分类一', '分类2'],
+        rightItemList: [['美式尊贵'], ['日式清爽']],
+        showCategory: false,
+        productList: [],
+        active: 0,
+        itemList: [], // 左边导航
+        itemProduct: [], // 右边商品所有商品
+        itemCurrent: [], // 右边当前商品
+        product: ['鲨鱼', '果冻', '水果', '宁们'],
+        firstGrade: ['brandId', 'colorId', 'material', 'spaceId', 'style', 'typeId', ''],
+        //  排序板块
+        arraySort: ['默认', '浏览量从多到少', '价格从低到高', '价格从高到低'],
+        arraySelect: ['默认', '推荐', '新品'],
+        sortMode:0,
+        type: null,
+        productId: null,
+
+        // 搜索板块
+        searchInputValue: '',
+        //    筛选板块
+        selectIndex: 0
+    }
+    onLoad(options) {
+      var that = this
+      // 修改标题
+      wx.setNavigationBarTitle({
+        title: ' \' ' + options.searchInputValue + '\'的搜索结果'
+      })
+      console.table(options)
+      this.setData({
+          searchInputValue: options.searchInputValue
+      })
+      this.searchInputValue = options.searchInputValue
+        wepy.showLoading({
+            title: '拼命加载中...'
+        })
+      wx.request({
+        url: 'https://yichen.zhagen.ren/dengtao/api/product/list?searchWord=' + options.searchInputValue  + "&pageNum=" + that.pageNum + "&size=20",
+        success: function (res) {
+          console.error('商品列表')
+          console.log(res.data.data.records)
+          that.setData({
+            productList: res.data.data.records,
+              searchInputValue:  options.searchInputValue
+          })
+          that.productList = res.data.data.records
+            that.searchInputValue = options.searchInputValue
+            wepy.hideLoading()
+        }
+      })
+    }
+    methods = {
+        //  到达底部，获取更多商品
+        getMoreProducts(){
+            var that = this
+            that.pageNum += 1
+            console.log("1111");
+            wepy.showLoading({
+                title: "拼命加载中..."
+            })
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/product/list?' + '&sortMode=' + that.sortMode + '&maxRetailPrice=' + that.maxPrice + '&minRetailPrice=' +that.minPrice + "&pageNum=" + that.pageNum + "&size=20" + "&selectMode=" + that.selectIndex + "&searchWord=" + that.searchInputValue,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            wepy.hideLoading()
+                            console.table(res)
+                            that.setData({
+                                productList: that.productList.concat(res.data.data.records)
+                            })
+                            that.productList = that.productList.concat(res.data.data.records)
+                            wepy.hideLoading()
+                            if (res.data.data.records.length === 0){
+                                console.log("没有拉");
+                                wx.showLoading({
+                                    title: '没有更多了哦',
+                                    duration:1000
+                                })
+                            }
+                        }
+                    })
+                }
+            });
+        },
+      onClickItem(itemId) {
+        var that = this
+        console.log(itemId)
+        this.setData({
+          activePrice: itemId,
+          minPrice: that.priceList[itemId].minPrice,
+          maxPrice: that.priceList[itemId].maxPrice
+        })
+        that.activePrice = itemId
+        that.minPrice = that.priceList[itemId].minPrice
+        that.maxPrice = that.priceList[itemId].maxPrice
+      },
+
+        //  价格板块
+        onClickPriceItem(itemId) {
+            var that = this
+            console.log(itemId)
+            this.setData({
+                activePrice: itemId,
+                minPrice: that.priceList[itemId].minPrice,
+                maxPrice: that.priceList[itemId].maxPrice
+            })
+            that.activePrice = itemId
+            that.minPrice = that.priceList[itemId].minPrice
+            that.maxPrice = that.priceList[itemId].maxPrice
+        },
+        // formSubmit: function (e) {
+        //     var that = this
+        //     // 返回顶部
+        //     that.topNum = 0
+        //     that.setData({
+        //         topNum: 0
+        //     })
+        //
+        //     // 重置页数
+        //     that.pageNum = 1
+        //     console.log('form发生了submit事件，携带数据为：', e.detail.value)
+        //     wepy.showLoading({
+        //         title: '加载中...'
+        //     })
+        //     wx.getStorage({
+        //         key: 'session-id',
+        //         success: response => {
+        //             wx.request({
+        //                 url: BASEURL + '/dengtao/api/product/list?' + 'sortMode=' + that.sortMode + '&maxRetailPrice=' + e.detail.value.maxPrice + '&minRetailPrice=' + e.detail.value.minPrice +' &searchWord=' + that.searchInputValue + "&pageNum=" + that.pageNum + "&size=20" + "&selectMode=" + e.detail.value,
+        //                 header: { 'Cookie': 'JSESSIONID=' + response.data },
+        //
+        //                 success: function (res) {
+        //                     wepy.hideLoading()
+        //                     console.log("价格刷选");
+        //                     console.log(res);
+        //                     that.setData({
+        //                         maxPrice: e.detail.value.maxPrice,
+        //                         minPrice: e.detail.value.minPrice,
+        //                         productList: res.data.data.records,
+        //                         showPrice: false
+        //                     })
+        //                     that.maxPrice = e.detail.value.maxPrice
+        //                     that.minPrice = e.detail.value.minPrice
+        //                     that.productList = res.data.data.records
+        //                     that.showPrice = false
+        //                 }
+        //             })
+        //         }
+        //     });
+        //
+        // },
+        formSubmit: function (e) {
+            var that = this
+
+            // 返回顶部
+            that.topNum = 0
+            that.setData({
+                topNum: 0
+            })
+
+            // 重置页数
+            that.pageNum = 1
+            console.log('form发生了submit事件，携带数据为：', e.detail.value)
+            wepy.showLoading({
+                title: '加载中...'
+            })
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/product/list?' + that.type + '=' + that.productId + '&sortMode=' + that.sortMode + '&maxRetailPrice=' + e.detail.value.maxPrice + '&minRetailPrice=' +e.detail.value.minPrice + "&pageNum=" + that.pageNum + "&size=20" + "&selectMode=" + that.selectIndex,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+                        success: function (res) {
+                            wepy.hideLoading()
+                            console.log("价格刷选");
+                            console.log(res);
+                            that.setData({
+                                maxPrice: e.detail.value.maxPrice,
+                                minPrice: e.detail.value.minPrice,
+                                productList: res.data.data.records,
+                                showPrice: false
+                            })
+                            that.maxPrice = e.detail.value.maxPrice
+                            that.minPrice = e.detail.value.minPrice
+                            that.productList = res.data.data.records
+                            that.showPrice = false
+                        }
+                    })
+                }
+            });
+        },
+        formReset: function () {
+            this.setData({
+                activePrice: -1
+            })
+            this.activePrice = -1
+        },
+        showPricePopup() {
+            this.setData({ showPrice: true })
+            this.showPrice = true
+        },
+        onPriceClose() {
+            this.setData({ showPrice: false })
+            this.showPrice = false
+        },
+      goToDetail(id) {
+        wx.navigateTo({
+          url: '../pages/detail?id=' + id
+        })
+      },
+
+        //  排序板块
+        bindPickerSort: function (e) {
+            var that =  this
+            // 返回顶部
+            that.topNum = 0
+            that.setData({
+                topNum: 0
+            })
+
+            // 重置页数
+            that.pageNum = 1
+
+            console.log('picker发送选择改变，携带值为', e.detail.value)
+            wepy.showLoading({
+                title: '加载中...'
+            })
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/product/list?' + 'sortMode=' + e.detail.value + '&maxRetailPrice=' + that.maxPrice + '&minRetailPrice=' + that.minPrice +' &searchWord=' + that.searchInputValue + "&pageNum=" + that.pageNum + "&size=20" + "&selectMode=" + that.selectIndex,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+
+                        success: function (res) {
+                            console.table(res)
+                            that.setData({
+                                sortMode: e.detail.value,
+                                productList: res.data.data.records
+                            })
+                            that.productList = res.data.data.records
+                            that.sortMode = e.detail.value
+                            wepy.hideLoading()
+                        }
+                    })
+                }
+            });
+
+            // this.setData({
+            //   index: e.detail.value
+            // })
+        },
+        //  刷选板块
+        bindPickerSelect: function (e) {
+            var that =this;
+            // 返回顶部
+            that.topNum = 0
+            that.setData({
+                topNum: 0
+            })
+
+            // 重置页数
+            that.pageNum = 1
+            console.log('picker发送选择改变，携带值为', e.detail.value)
+            wepy.showLoading({
+                title: '加载中...'
+            })
+            wx.getStorage({
+                key: 'session-id',
+                success: response => {
+                    wx.request({
+                        url: BASEURL + '/dengtao/api/product/list?' + 'sortMode=' + that.sortMode + '&maxRetailPrice=' + that.maxPrice + '&minRetailPrice=' + that.minPrice +' &searchWord=' + that.searchInputValue + "&pageNum=" + that.pageNum + "&size=20" + "&selectMode=" + e.detail.value,
+                        header: { 'Cookie': 'JSESSIONID=' + response.data },
+
+                        success: function (res) {
+                            console.log(res);
+                            that.setData({
+                                selectIndex: e.detail.value,
+                                productList: res.data.data.records
+                            })
+                            that.productList = res.data.data.records
+                            that.selectIndex = e.detail.value
+                            wepy.hideLoading()
+                        }
+                    })
+                }
+            });
+
+
+            this.setData({
+                // index: e.detail.value
+            })
+        },
+    }
+  }
+</script>

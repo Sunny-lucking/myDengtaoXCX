@@ -1,0 +1,124 @@
+<style lang="scss">
+    .product-list{
+        padding: 10rpx;
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .product-item{
+            background-color: #fff;
+            margin-top: 5rpx;
+            width: 49.9%;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+            image{
+                width: 100%;
+                height: 400rpx;
+            }
+            .product-desc{
+                margin-top: 20rpx;
+                padding: 0 20rpx;
+                box-sizing: border-box;
+                font-size: 30rpx;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; //需要控制的文本行数
+                overflow: hidden;
+            }
+            .product-price{
+                padding: 10rpx;
+                box-sizing: border-box;
+                color: red;
+                font-size: 28rpx;
+                font-weight: bolder;
+                .origin-price{
+                    text-decoration: line-through;
+                    color: #ccc;
+                    margin-right: 20rpx;
+                    font-weight: normal;
+                }
+                span{
+                    font-size: 20rpx;
+                    border: 1px solid red;
+                    padding: 0 5rpx;
+                    box-sizing: border-box;
+                    border-radius: 10rpx;
+                }
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="product-list">
+        1111
+        <text>{{productList.length}}</text>
+        <repeat for="{{productList.default}}" key="index" index="index" item="item" >
+            <view class="product-item" @tap="goToDetail({{item.id}})">
+                <image src="{{item.productImages[0]}}" alt="mei"></image>
+                <view class="product-desc">{{item.productName}}</view>
+                <view class="product-price">￥{{item.retailPrice}} <text class="origin-price">￥{{item.marketPrice}}</text><span>包邮</span></view>
+            </view>
+        </repeat>
+    </view>
+</template>
+<script>
+    import wepy from 'wepy'
+
+    export default class extends wepy.component {
+        config = {}
+        props= {
+            productList:{
+                type:Array,
+                default:()=>[{
+                    "id": "268",
+                    "productName": "北欧客厅灯简约现代餐厅吊灯客厅餐厅卧室灯轻奢08灯具",
+                    "productImages": ["http://chenxiang.productshow.cn/dengtao/1577611933882", "http://huanling.productshow.cn/dengtao/1577611936024", "http://chenxiang.productshow.cn/dengtao/1577611940908", "http://huanling.productshow.cn/dengtao/1577611944152", "http://resources.productshow.cn/dengtao/1577611955015"],
+                    "productDetailImages": ["http://chenxiang.productshow.cn/dengtao/1577611957687", "http://huanling.productshow.cn/dengtao/1577611967278", "http://resources.productshow.cn/dengtao/1577611969182", "http://chenxiang.productshow.cn/dengtao/1577611971569", "http://huanling.productshow.cn/dengtao/1577611973925", "http://resources.productshow.cn/dengtao/1577611976426", "http://chenxiang.productshow.cn/dengtao/1577611979982", "http://huanling.productshow.cn/dengtao/1577611983011", "http://resources.productshow.cn/dengtao/1577611985318", "http://chenxiang.productshow.cn/dengtao/1577611988623", "http://huanling.productshow.cn/dengtao/1577611991170", "http://resources.productshow.cn/dengtao/1577611993330", "http://chenxiang.productshow.cn/dengtao/1577611995357"],
+                    "marketPrice": "2300",
+                    "retailPrice": "0",
+                    "pageview": 13,
+                    "description": "北欧客厅灯简约现代餐厅吊灯客厅餐厅卧室灯轻奢08灯具",
+                    "uv": 0,
+                    "lightingMatchImgs": ["http://chenxiang.productshow.cn/dengtao/1577957323668"],
+                    "sale": 0,
+                    "createTime": "2019-12-29 03:35:57",
+                    "collected": null
+                }],
+                twoWay: true
+            }
+        }
+        data= {
+            // productList:[{
+            //     "id": "268",
+            //     "productName": "北欧客厅灯简约现代餐厅吊灯客厅餐厅卧室灯轻奢08灯具",
+            //     "productImages": ["http://chenxiang.productshow.cn/dengtao/1577611933882", "http://huanling.productshow.cn/dengtao/1577611936024", "http://chenxiang.productshow.cn/dengtao/1577611940908", "http://huanling.productshow.cn/dengtao/1577611944152", "http://resources.productshow.cn/dengtao/1577611955015"],
+            //     "productDetailImages": ["http://chenxiang.productshow.cn/dengtao/1577611957687", "http://huanling.productshow.cn/dengtao/1577611967278", "http://resources.productshow.cn/dengtao/1577611969182", "http://chenxiang.productshow.cn/dengtao/1577611971569", "http://huanling.productshow.cn/dengtao/1577611973925", "http://resources.productshow.cn/dengtao/1577611976426", "http://chenxiang.productshow.cn/dengtao/1577611979982", "http://huanling.productshow.cn/dengtao/1577611983011", "http://resources.productshow.cn/dengtao/1577611985318", "http://chenxiang.productshow.cn/dengtao/1577611988623", "http://huanling.productshow.cn/dengtao/1577611991170", "http://resources.productshow.cn/dengtao/1577611993330", "http://chenxiang.productshow.cn/dengtao/1577611995357"],
+            //     "marketPrice": "2300",
+            //     "retailPrice": "0",
+            //     "pageview": 13,
+            //     "description": "北欧客厅灯简约现代餐厅吊灯客厅餐厅卧室灯轻奢08灯具",
+            //     "uv": 0,
+            //     "lightingMatchImgs": ["http://chenxiang.productshow.cn/dengtao/1577957323668"],
+            //     "sale": 0,
+            //     "createTime": "2019-12-29 03:35:57",
+            //     "collected": null
+            // }]
+        }
+        computed = {
+            // productList () {
+            //     console.log(typeof this.productList)
+            //     console.log(this.productList);
+            //     return this.productList
+            // }
+        }
+        onLoad(){
+            console.log("传过来什么值啊");
+            console.log(this.productList);
+            this.$apply();
+        }
+    }
+</script>

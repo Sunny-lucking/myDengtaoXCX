@@ -1,0 +1,220 @@
+<style lang="scss">
+.page{
+    color: #0083cd;
+}
+.lamp{
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+}
+.lamp-top{
+    background-color: #fdfdfe;
+    width: 100%;
+    height: 200rpx;
+    padding: 30rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    .image-wrapper{
+        width: 140rpx;
+        height: 140rpx;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        image{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .lamp-btn{
+        flex: 1;
+        height: 65rpx;
+        padding: 0 40rpx;
+        .btn{
+            height: 100%;
+            background-color: #f95225;
+            color: white;
+            text-align: center;
+            line-height: 65rpx;
+            border-radius: 20rpx;
+            font-size: 32rpx;
+        }
+    }
+
+}
+.lamp-content{
+    margin-top: 20rpx;
+    background-color: #fdfdfe;
+    .content-title{
+        font-size: 30rpx;
+        padding-top: 30rpx;
+        margin-top: 20rpx;
+        margin-left: 30rpx;
+        box-sizing: border-box;
+    }
+}
+.product-list{
+    padding: 10rpx;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .product-item{
+        box-shadow: 0px 0px 1px #888888;
+        background-color: #fff;
+        margin-top: 5rpx;
+        width: 49%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        image{
+            width: 100%;
+            height: 400rpx;
+        }
+        .product-desc{
+            margin-top: 20rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; //需要控制的文本行数
+            overflow: hidden;
+        }
+        .product-price{
+            padding: 10rpx;
+            box-sizing: border-box;
+            color: red;
+            font-size: 28rpx;
+            font-weight: bolder;
+            .origin-price{
+                text-decoration: line-through;
+                color: #ccc;
+                margin-right: 20rpx;
+                font-weight: normal;
+            }
+            span{
+                font-size: 20rpx;
+                border: 1px solid red;
+                padding: 0 5rpx;
+                box-sizing: border-box;
+                border-radius: 10rpx;
+            }
+        }
+    }
+}
+</style>
+
+<template>
+    <view class="lamp">
+        <view class="lamp-top"  @tap="changeImage">
+            <view class="image-wrapper">
+                <image src="{{avatar}}"></image>
+            </view>
+            <view class="lamp-btn">
+                <view class="btn">上传图片</view>
+            </view>
+        </view>
+        <view class="lamp-content" >
+            <view class="content-title" wx:if="{{homeProductList.length === 0 && isSelect === true}}">查无结果</view>
+        </view>
+        <view class="lamp-content" wx:if="{{homeProductList.length > 0}}">
+            <view class="content-title">搜索记录</view>
+            <view class="product-list">
+                <repeat for="{{homeProductList}}" key="index" index="index" item="item" >
+                    <!--<view @tap="onClickItem({{index}})" id = "left-item"   class="{{ active === index ? 'active-item':'left-item' }}">{{item.classificationName}}</view>-->
+                    <view class="product-item" @tap="goToDetail({{item.id}})">
+                        <image src="{{item.productImages[0]}}" alt="mei"></image>
+                        <view class="product-desc">{{item.productName}}</view>
+                        <!--第一版-->
+                        <!--<view class="product-price">￥{{item.retailPrice}} <text class="origin-price">￥{{item.marketPrice}}</text><span>包邮</span></view>-->
+
+                        <!--第二版-->
+                        <view class="product-price" wx:if="{{item.retailPrice === item.maxRetailPrice}}">￥{{item.maxRetailPrice}}<span>包邮</span></view>
+                        <view class="product-price" wx:if="{{item.retailPrice !== item.maxRetailPrice}}">￥{{item.retailPrice}}- {{item.maxRetailPrice}}<span>包邮</span></view>
+                    </view>
+                </repeat>
+            </view>
+        </view>
+    </view>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  import {createRondomSrc} from './../utils/util'
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '以图搜灯',
+    }
+    data= {
+        avatar: './../images/shangchuan.png',
+        homeProductList: [],
+        isSeLect: false
+    }
+    onLoad() {
+
+      }
+     methods= {
+         changeImage() {
+             var that = this
+             wx.getStorage({
+                 key: 'session-id',
+                 success: response => {
+                     wx.chooseImage({
+                         count: 1, // 默认9
+                         success: function (res) {
+                             console.log(res);
+                             wepy.showLoading({ title: '上传图片中' })
+                             // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+                             var CurrentImgSrc = res.tempFilePaths[0]
+                             const mime = CurrentImgSrc.slice(CurrentImgSrc.lastIndexOf('.'))
+                             var key = createRondomSrc(20) + mime
+                             wx.uploadFile({
+                                 url: BASEURL + '/dengtao/api/product/listBySimilarImage',
+                                 method: 'get',
+                                 filePath: CurrentImgSrc,
+                                 name: 'imgFile',
+                                 header: { 'Cookie': 'JSESSIONID=' + response.data },
+                                 formData: {
+                                     key
+                                 },
+                                 success: res => {
+                                     console.log(typeof res.data);
+                                     console.log(JSON.parse(res.data));
+                                     wepy.hideLoading()
+                                     that.setData({
+                                         homeProductList: JSON.parse(res.data).data,
+                                         avatar: CurrentImgSrc,
+                                         isSelect: true
+                                     })
+                                     that.homeProductList = JSON.parse(res.data).data
+                                     // that.avatar = JSON.parse(res.data).data
+                                     that.avatar = CurrentImgSrc
+                                     that.isSelect = true
+
+                                 }
+                             })
+                         }
+                     })
+                 }
+             });
+
+
+         },
+         goToDetail(id) {
+             wx.navigateTo({
+                 url: '../pages/detail?id=' + id
+             })
+         },
+     }
+     computed= {
+        isItemEmpty(){
+            return this.homeProductList.length === 0
+        }
+     }
+  }
+</script>

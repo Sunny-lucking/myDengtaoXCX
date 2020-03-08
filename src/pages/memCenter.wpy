@@ -1,0 +1,249 @@
+<style lang="scss">
+.memcenter{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30rpx;
+    box-sizing: border-box;
+    .item{
+        border-bottom: 1px solid #ccc;
+        margin-top: 30rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100rpx;
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        .item-right{
+            text-align: right;
+            image{
+                width: 100rpx;
+                height: 100rpx;
+                border-radius: 50%;
+            }
+        }
+    }
+    .btn{
+        /*position: fixed;*/
+        /*bottom: 100rpx;*/
+        /*left: 0;*/
+        margin-top: 300rpx;
+    }
+}
+</style>
+
+<template>
+<view class="memcenter">
+    <form bindsubmit='searchBox'>
+        <view class="avatar-wrapper item">
+            <view class="item-left">头像</view>
+            <view class="item-right" @tap="changeAvatar">
+                <image src="{{avatar}}" mode="aspectFill"></image>
+            </view>
+        </view>
+        <view class="username-wrapper item">
+            <view class="item-left">昵称</view>
+            <view class="item-right">
+                <input placeholder="昵称" name="userNickname" type="text" value="{{userNickname}}" bindinput="changeName" />
+            </view>
+        </view>
+        <view class="telphone-wrapper item">
+            <view class="item-left">手机</view>
+            <view class="item-right">
+                <input type="text" placeholder="请输入手机" value="{{telephoneNum}}" bindinput="changePhone"/>
+            </view>
+        </view>
+        <view class="email-wrapper item">
+            <view class="item-left">邮箱</view>
+            <view class="item-right">
+                <input type="text" placeholder="请输入邮箱" value="{{email}}" bindinput="changeEmail"/>
+            </view>
+        </view>
+    </form>
+    <view class="btn">
+        <button type="primary" @tap="saveInfomation">保存</button>
+    </view>
+</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {BASEURL} from "../utils/global";
+  import {createRondomSrc} from './../utils/util'
+  import {checkPhone} from './../utils/util'
+  import {checkEmail} from './../utils/util'
+  export default class extends wepy.page {
+    config = {
+        'navigationBarTitleText': '修改信息'
+    }
+    data= {
+      userInfomation: null,
+      avatar: null,
+      userNickname: null,
+      telephoneNum: null,
+      email: null
+    }
+    searchBox(e) {
+      console.log('改变昵称')
+      // this.setData({
+      //   userNickname: e.detail.value.userNickname
+      // })
+      // this.userNickname = e.detail.value.userNickname
+    }
+    // changeName(e) {
+    //   console.log('改变昵称')
+    //   // this.userNickname = e.detail.value
+    //   // this.setData({
+    //   //   userNickname: e.detail.value
+    //   // })
+    // }
+
+    methods= {
+      changeName(e) {
+        console.log('改变昵称')
+        console.log(e.detail.value)
+        this.setData({
+          userNickname: e.detail.value
+        })
+        this.userNickname = e.detail.value
+      },
+      changePhone(e) {
+        console.log('改变手机')
+        this.setData({
+          telephoneNum: e.detail.value
+        })
+        this.telephoneNum = e.detail.value
+      },
+      changeEmail(e) {
+        console.log('改变手机')
+        this.setData({
+          email: e.detail.value
+        })
+        this.email = e.detail.value
+      },
+      changeAvatar() {
+        var that = this
+        wx.chooseImage({
+          count: 1, // 默认9
+          success: function (res) {
+            wepy.showLoading({ title: '上传图片中' })
+            // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            var CurrentImgSrc = res.tempFilePaths[0]
+            const mime = CurrentImgSrc.slice(CurrentImgSrc.lastIndexOf('.'))
+            let key = createRondomSrc(20) + mime
+            wx.uploadFile({
+                url: 'https://resource.alphaking.cc/resourceService/upload',
+                filePath: CurrentImgSrc,
+                name: 'file',
+                formData: {
+                  key
+                },
+                success: res => {
+                  wepy.hideLoading()
+                  that.setData({
+                    avatar: JSON.parse(res.data).data
+                  })
+                  that.avatar = JSON.parse(res.data).data
+                  console.log('上传图片成功')
+                  console.log(res)
+                  console.log('key=' + key)
+                }
+            })
+          }
+        })
+        // wepy
+        //   .chooseImage({
+        //     count: 1
+        //   })
+        //   .then(res => {
+        //     wepy.showLoading({ title: '上传图片中' })
+        //     let CurrentImgSrc = res.tempFilePaths[0]
+        //     const mime = CurrentImgSrc.slice(CurrentImgSrc.lastIndexOf('.'))
+        //     let key = createRondomSrc(20) + mime
+        //     wepy
+        //       .uploadFile({
+        //         // 上传图片
+        //         url: 'https://resource.alphaking.cc/resourceService/upload',
+        //         filePath: CurrentImgSrc,
+        //         name: 'file',
+        //         formData: {
+        //           key
+        //         }
+        //       })
+        //       .then(res => {
+        //         console.log('上传图片成功')
+        //         console.log(res)
+        //         wepy.hideLoading()
+        //         // console.log(this.pics)
+        //         // let newImgUrl = JSON.parse(res.data).data
+        //         // pictureUrl = newImgUrl
+        //         // self.$apply()
+        //         // self.netWork().moveImg()
+        //       })
+        //   })
+      },
+      saveInfomation() {
+          var that = this
+          if(!checkPhone(this.telephoneNum)) return;
+          console.log("haha");
+          if (!checkEmail(this.email)) return;
+          wx.getStorage({
+            key: 'session-id',
+            success: response => {
+                wx.request({
+                    url: BASEURL + '/dengtao/api/user/save',
+                    header: { 'Cookie': 'JSESSIONID=' + response.data },
+                    method: 'post',
+                    data:{
+                        'userNickname': that.userNickname,
+                        'portrait' : that.avatar,
+                        'email': that.email,
+                        'telephoneNum': that.telephoneNum
+                    },
+                    success: function (res) {
+                        console.table(res)
+                        wepy.showLoading({
+                            title:'保存成功',
+                            duration:500
+                        })
+                        console.log("跳啊");
+                        wx.navigateBack()
+                        // wx.navigateTo({
+                        //     url: '../pages/member'
+                        // })
+                    }
+                })
+            }
+          });
+      }
+    }
+    onLoad() {
+      var that = this
+      wx.getStorage({
+        key: 'session-id',
+        success: response => {
+          wx.request({
+            url: BASEURL + '/dengtao/api/user/info',
+            header: { 'Cookie': 'JSESSIONID=' + response.data },
+            method: 'get',
+            success: function (res) {
+              console.log(res.data.data)
+              that.setData({
+                userInfomation: res.data.data,
+                avatar: res.data.data.portrait,
+                telephoneNum: res.data.data.telephoneNum,
+                userNickname: res.data.data.userNickname,
+                email: res.data.data.email
+              })
+              that.userInfomation = res.data.data
+              that.avatar = res.data.data.portrait
+              that.telephoneNum = res.data.data.telephoneNum
+              that.userNickname =  res.data.data.userNickname
+              that.email = res.data.data.email
+            }
+          })
+        }
+      })
+    }
+  }
+</script>

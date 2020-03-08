@@ -1,0 +1,701 @@
+<style>
+page {
+  background-color: #f8f7f7;
+}
+.background-options {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100vw;
+  height: 100vh;
+  z-index: 9;
+  /* display: none; */
+}
+.background-detial {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0);
+}
+.right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.topBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 10%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-around;
+}
+.topBar-option {
+  width: 50%;
+  height: 100%;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+}
+.style-options {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  width: 50%;
+  height: 40%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+}
+.style-space-option {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.8);
+  font-size: 16rpx;
+}
+.space-options {
+  position: absolute;
+  right: 0;
+  top: 10%;
+  width: 50%;
+  height: 40%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+}
+.background-images {
+  position: absolute;
+  left: 0;
+  top: 10vh;
+  width: 100%;
+  height: 70%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: flex-start; /* flex容器有多行时（多跟轴线），控制行与行之间的距离 */
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.background-image {
+  width: 12.5vw;
+  height: calc(12.5vw);
+  margin: 1vw;
+  margin-top: 10rpx;
+}
+
+.options {
+  position: absolute;
+  left: 3vw;
+  bottom: 5vh;
+  width: 40%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.option {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.options-images {
+  width: 80%;
+  height: 80%;
+}
+.options-text {
+  width: 100%;
+  height: 20%;
+  font-size: 14rpx;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 控制字符的间距 */
+  letter-spacing: 15rpx;
+  text-indent: 15rpx;
+}
+.touchWrap {
+  transform-origin: center;
+  position: absolute;
+  z-index: 100;
+}
+
+.imgWrap {
+  box-sizing: border-box;
+  width: 100%;
+  transform-origin: center;
+  float: left;
+  border: 5rpx transparent dashed;
+}
+.imgWrap image {
+  float: left;
+}
+.touchActive .x {
+  display: block;
+}
+
+.touchActive .o {
+  display: block;
+}
+
+.x {
+  position: absolute;
+  top: -25rpx;
+  left: -25rpx;
+  z-index: 500;
+  display: none;
+  width: 50rpx;
+  height: 50rpx;
+  overflow: hidden;
+  font-weight: bold;
+  color: #d1e3f1;
+}
+.o {
+  position: absolute;
+  bottom: -25rpx;
+  right: -25rpx;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  display: none;
+  overflow: hidden;
+  font-weight: bold;
+  color: #d1e3f1;
+}
+.active {
+  background-color: rgb(78, 114, 151);
+}
+
+.active view {
+  border: none;
+}
+.touchActive {
+  /* border: 4rpx #fff dashed; */
+  z-index: 400;
+}
+</style>
+
+<template lang="wxml">
+  <view class="background-options" wx:if='{{isShowBackgroundOptions}}'>
+    <view class="background-detial">
+      <view class="topBar">
+        <view class="topBar-option" @tap="showOrCloseStyleOptions">风格</view>
+        <view class="topBar-option" @tap="showOrCloseSpaceOptions">空间</view>
+      </view>
+      <view class="style-options" wx:if='{{isShowStyleOptions}}'>
+        <view class=".style-space-option">全部风格</view>
+        <view class=".style-space-option" wx:for="{{StyleCategory}}" wx:key="index" index="index" item="item">{{item.classificationName}}</view>
+      </view>
+      <view class="space-options" wx:if='{{isShowSpaceOptions}}'>
+        <view class=".style-space-option">全部空间</view>
+        <view class=".style-space-option" wx:for="{{SpaceCategory}}" wx:key="index" index="index" item="item">{{item.classificationName}}</view>
+      </view>
+      <view class="background-images">
+        <scroll-view scroll-y="true" style="height: 70vh;">
+          <repeat for="{{AllBackgroupImage}}" key="index" index="index" item="item">
+            <image src='{{item.img}}' class="background-image"></image> <!-- @tap="changeBigImg({{item.img}})" -->
+          </repeat>
+        </scroll-view>
+      </view>
+    </view>
+    <view class="right" @tap="closeBackgroundOptions"></view>
+  </view>
+
+  <canvas 
+  canvas-id="myCanvas"
+  style="width:100vw; height:100vh;">
+  </canvas>
+
+  <view class="options">
+    <view class="option" @tap="showBackgroundOptions">
+      <image src="../images/smarthome/pic-fill.png" class="options-images"></image>
+      <view class="options-text">背景</view>
+    </view>
+    <view class="option" @tap="chooseImage">
+      <image src="../images/smarthome/album.png" class="options-images"></image>
+      <view class="options-text">相册</view>
+    </view>
+    <view class="option" bindtap="createImage">
+      <image src="../images/smarthome/save.png" class="options-images"></image>
+      <view class="options-text">保存</view>
+    </view>
+    <view class="option">
+      <image src="../images/smarthome/return.png" class="options-images"></image>
+      <view class="options-text">返回</view>
+    </view>
+  </view>
+
+  <view>
+    <repeat for="{{itemList}}" key="index" item="item">
+        <view class='touchWrap' style='transform: scale({{item.scale}});top:{{item.top}}px;left:{{item.left}}px; '>
+            <!-- <view class='imgWrap {{item.active? "touchActive":""}}' style="transform: rotate({{item.angle}}deg); border: {{item.active?4*item.oScale:0}}rpx #fff dashed;"> -->
+            <view class='imgWrap touchActive' style="transform: rotate({{item.angle}}deg); ">
+                <image src='{{item.image}}' data-id='{{item.id}}' style='width:{{item.width}}px;height:{{item.height}}px;' bindtouchstart='WraptouchStart'  bindtouchmove='WraptouchMove' bindtouchend='WraptouchEnd'></image>
+                <image class='o' src='../images/smarthome/o.png' style='transform: scale({{item.oScale}});transform-origin:center;' data-id='{{item.id}}' bindtouchstart='oTouchStart' bindtouchmove='oTouchMove' ></image>
+            </view>
+        </view>
+    </repeat>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { BASEURL } from '../utils/global';
+
+let index = 0,
+  flag = true,
+  itemId = 1;
+
+export default class ZhiNengPeiDeng extends wepy.page {
+  config = {
+    navigationBarTitleText: '智能配灯',
+    pageOrientation: 'landscape', //横屏
+    navigationStyle: 'custom', //自定义导航栏
+    disableScroll: true, //禁止滚动
+    disableSwipeBack: true //禁止向右滑动返回
+  };
+
+  components = {};
+
+  data = {
+    scene: '../images/smarthome/background.jpg',
+    imageWidth: '',
+    imageHeight: '',
+    isShowBackgroundOptions: false,
+    isShowStyleOptions: false,
+    isShowSpaceOptions: false,
+    itemList: [],
+    items: [],
+    AllBackgroupImage: [],
+    backgroundImage: '',
+    SpaceCategory: '',
+    StyleCategory: ''
+  };
+
+  methods = {
+    changeBigImg(url) {
+      let _this = this;
+      this.scene = url;
+      wx.getImageInfo({
+        src: _this.scene,
+        success: function(res) {
+          const ctx = wx.createCanvasContext('myCanvas'); //创建画布对象
+          ctx.drawImage(res.path, 0, 0, _this.imageWidth, _this.imageHeight);
+          ctx.draw();
+        }
+      });
+    }
+  };
+
+  events = {};
+
+  onReady() {
+    let _this = this,
+      deviceHeight = 0,
+      deviceWidth = 0;
+
+    //获取设备宽度，用于求所需画在画布上的图片的高度
+    wx.getSystemInfo({
+      success: function(res) {
+        deviceWidth = res.windowWidth; //获取设备宽度
+        deviceHeight = res.windowHeight;
+        wx.getImageInfo({
+          //获取图片信息
+          src: _this.data.scene,
+          success: function(res) {
+            let imageWidth = deviceWidth,
+              //imageHeight = (deviceWidth / res.width) * res.height; //求所需画在画布上的图片的高度
+              imageHeight = deviceHeight;
+            _this.imageWidth = imageWidth;
+            _this.imageHeight = imageHeight;
+
+            const ctx = wx.createCanvasContext('myCanvas'); //创建画布对象
+            ctx.drawImage(_this.data.scene, 0, 0, imageWidth, imageHeight); //添加图片 踩坑:注意res.path和wx.getSystemInfo的src并不完全一样
+            ctx.draw();
+          },
+          fail: function(res) {
+            /* console.log('加载图片失败'); */
+          }
+        });
+      }
+    });
+  }
+
+  createImage() {
+    wx.showLoading({
+      title: '保存图片中'
+    });
+
+    let _this = this;
+    let imageWidth = this.data.imageWidth,
+      imageHeight = this.data.imageHeight;
+
+    let angle = (this.data.itemList[0].rotate * Math.PI) / 180,
+      rotate = this.data.itemList[0].rotate,
+      scale = this.data.itemList[0].scale,
+      height = this.data.itemList[0].height,
+      width = this.data.itemList[0].width,
+      top = this.data.itemList[0].top,
+      left = this.data.itemList[0].left;
+    let sx = ((1 - scale) * width) / 2,
+      sy = ((1 - scale) * height) / 2,
+      rx = 0,
+      ry = 0;
+      
+    console.log(this.data.itemList[0].image)
+    const ctx = wx.createCanvasContext('myCanvas'); //创建画布对象
+    ctx.drawImage(this.data.scene, 0, 0, this.imageWidth, this.imageHeight);
+    ctx.translate(left + sx + 5 * scale + rx, top + sy + 5 * scale + ry);
+    ctx.drawImage(
+      this.data.itemList[0].image,
+      0,
+      0,
+      width * scale,
+      height * scale
+    ); //绘制图片
+    ctx.draw();
+
+    wx.canvasToTempFilePath({
+      //将canvas生成图片
+      canvasId: 'myCanvas',
+      x: 0,
+      y: 0,
+      width: imageWidth,
+      height: imageHeight,
+      destWidth: imageWidth, //截取canvas的宽度
+      destHeight: imageHeight, //截取canvas的高度
+      success: function(res) {
+        wx.saveImageToPhotosAlbum({
+          //保存图片到相册
+          filePath: res.tempFilePath,
+          success: function() {
+            wx.showToast({
+              title: '生成图片成功！',
+              duration: 2000
+            });
+          }
+        });
+      }
+    });
+
+    ctx.draw();
+
+    setTimeout(function() {
+      wx.hideLoading();
+      const _ctx = wx.createCanvasContext('myCanvas'); //创建画布对象
+      _ctx.clearRect(0, 0, _this.imageWidth, _this.imageHeight);
+      _ctx.drawImage(
+        _this.data.scene,
+        0,
+        0,
+        _this.imageWidth,
+        _this.imageHeight
+      );
+      _ctx.draw();
+    }, 1000);
+  }
+
+  chooseImage() {
+    let _this = this;
+    wx.chooseImage({
+      count: 1, // 最多可以选择的图片张数，默认9
+      sizeType: ['original'], // original 原图，compressed 压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
+      success: function(res) {
+        // success
+        console.log(res.tempFilePaths[0]);
+        _this.data.scene = res.tempFilePaths[0];
+        _this.scene = res.tempFilePaths[0];
+        const ctx = wx.createCanvasContext('myCanvas'); //创建画布对象
+        ctx.drawImage(
+          _this.data.scene,
+          0,
+          0,
+          _this.imageWidth,
+          _this.imageHeight
+        ); //添加图片 踩坑:注意res.path和wx.getSystemInfo的src并不完全一样
+        ctx.draw();
+      },
+      fail: function() {
+        // fail
+        /* console.log('读取照片失败'); */
+      }
+    });
+  }
+
+  showBackgroundOptions() {
+    this.isShowBackgroundOptions = true;
+  }
+  closeBackgroundOptions() {
+    this.isShowBackgroundOptions = false;
+    this.isShowSpaceOptions = false;
+    this.isShowStyleOptions = false;
+  }
+  showOrCloseStyleOptions() {
+    if (this.isShowStyleOptions) {
+      this.isShowStyleOptions = false;
+    } else {
+      this.isShowStyleOptions = true;
+      this.isShowSpaceOptions = false;
+    }
+  }
+  showOrCloseSpaceOptions() {
+    if (this.isShowSpaceOptions) {
+      this.isShowSpaceOptions = false;
+    } else {
+      this.isShowStyleOptions = false;
+      this.isShowSpaceOptions = true;
+    }
+  }
+
+  onLoad() {
+    let that = this;
+    this.data.items = this.data.itemList;
+    this.setDropItem({
+      url: '../images/smarthome/1.png'
+    });
+
+    wx.getStorage({
+      key: 'session-id',
+      success: response => {
+        wepy.hideLoading();
+        wx.request({
+          url:
+            BASEURL +
+            '/dengtao/api/intelligentCollocation/listBackgroundImageClassifications',
+          header: { Cookie: 'JSESSIONID=' + response.data },
+          success: function(res) {
+            that.setData({
+              SpaceCategory: res.data.data[0].children,
+              StyleCategory: res.data.data[1].children
+            });
+            that.SpaceCategory = res.data.data[1].children;
+            that.StyleCategory = res.data.data[0].children;
+          }
+        });
+        wx.request({
+          url:
+            BASEURL +
+            '/dengtao/api/intelligentCollocation/listBackgroundImages',
+          header: { Cookie: 'JSESSIONID=' + response.data },
+          success: function(res) {
+            that.setData({
+              AllBackgroupImage: res.data.data.records,
+              backgroundImage: res.data.data.records[0].img
+            });
+            that.AllBackgroupImage = res.data.data.records;
+            that.backgroundImage = res.data.data.records[0].img;
+            wepy.hideLoading();
+          }
+        });
+      }
+    });
+  }
+
+  setDropItem(imgtempData) {
+    let tempData = {},
+      _this = this;
+    wx.getImageInfo({
+      src: imgtempData.url,
+      success: res => {
+        // 初始化数据
+        tempData.width = res.width; //宽度
+        tempData.height = res.height; //高度
+        tempData.image = imgtempData.url; //地址
+        tempData.id = ++itemId; //id
+        tempData.top = 0; //top定位
+        tempData.left = 0; //left定位
+        //圆心坐标
+        tempData.x = tempData.left + tempData.width / 2;
+        tempData.y = tempData.top + tempData.height / 2;
+        tempData.scale = 1; //scale缩放
+        tempData.oScale = 1; //方向缩放
+        tempData.rotate = 1; //旋转角度
+        tempData.active = false; //选中状态
+        console.log(tempData);
+        //this.tempData.items[this.tempData.items.length] = tempData;
+        _this.data.items[0] = tempData;
+        //_this.tempData.itemLIst[0] = tempData;
+
+        _this.data.itemList = _this.data.items;
+      }
+    });
+  }
+
+  WraptouchStart(e) {
+    for (let i = 0; i < this.data.items.length; i++) {
+      this.data.items[i].active = false;
+      if (e.currentTarget.dataset.id == this.data.items[i].id) {
+        index = i;
+        this.data.items[index].active = true;
+      }
+    }
+    this.itemLIst = this.data.items;
+    this.data.itemList = this.data.items;
+
+    this.data.items[index].lx = e.touches[0].clientX;
+    this.data.items[index].ly = e.touches[0].clientY;
+  }
+
+  WraptouchMove(e) {
+    if (flag) {
+      flag = false;
+      setTimeout(() => {
+        flag = true;
+      }, 100);
+    }
+    // console.log('WraptouchMove', e)
+    this.data.items[index]._lx = e.touches[0].clientX;
+    this.data.items[index]._ly = e.touches[0].clientY;
+
+    this.data.items[index].left +=
+      this.data.items[index]._lx - this.data.items[index].lx;
+    this.data.items[index].top +=
+      this.data.items[index]._ly - this.data.items[index].ly;
+    this.data.items[index].x +=
+      this.data.items[index]._lx - this.data.items[index].lx;
+    this.data.items[index].y +=
+      this.data.items[index]._ly - this.data.items[index].ly;
+
+    this.data.items[index].lx = e.touches[0].clientX;
+    this.data.items[index].ly = e.touches[0].clientY;
+    this.itemLIst = this.data.items;
+    this.data.itemList = this.data.items;
+  }
+
+  oTouchStart(e) {
+    //找到点击的那个图片对象，并记录
+    for (let i = 0; i < this.data.items.length; i++) {
+      this.data.items[i].active = false;
+      if (e.currentTarget.dataset.id == this.data.items[i].id) {
+        console.log('e.currentTarget.dataset.id', e.currentTarget.dataset.id);
+        index = i;
+        this.data.items[index].active = true;
+      }
+    }
+    //获取作为移动前角度的坐标
+    this.data.items[index].tx = e.touches[0].clientX;
+    this.data.items[index].ty = e.touches[0].clientY;
+    //移动前的角度
+    /* this.data.items[index].anglePre = this.countDeg(
+      this.data.items[index].x,
+      this.data.items[index].y,
+      this.data.items[index].tx,
+      this.data.items[index].ty
+    ); */
+    //获取图片半径
+    this.data.items[index].r = this.getDistancs(
+      this.data.items[index].x,
+      this.data.items[index].y,
+      this.data.items[index].left,
+      this.data.items[index].top
+    );
+    console.log(this.data.items[index]);
+  }
+
+  oTouchMove(e) {
+    let _this = this;
+    if (flag) {
+      flag = false;
+      setTimeout(() => {
+        flag = true;
+      }, 100);
+    }
+    //记录移动后的位置
+    _this.data.items[index]._tx = e.touches[0].clientX;
+    _this.data.items[index]._ty = e.touches[0].clientY;
+    //移动的点到圆心的距离
+    _this.data.items[index].disPtoO = _this.getDistancs(
+      _this.data.items[index].x,
+      _this.data.items[index].y,
+      _this.data.items[index]._tx,
+      _this.data.items[index]._ty - 10
+    );
+
+    _this.data.items[index].scale =
+      _this.data.items[index].disPtoO / _this.data.items[index].r;
+    _this.data.items[index].oScale = 1 / _this.data.items[index].scale;
+
+    //移动后位置的角度
+    /* _this.data.items[index].angleNext = _this.countDeg(
+      _this.data.items[index].x,
+      _this.data.items[index].y,
+      _this.data.items[index]._tx,
+      _this.data.items[index]._ty
+    ); */
+    //角度差
+    _this.data.items[index].new_rotate =
+      _this.data.items[index].angleNext - _this.data.items[index].anglePre;
+
+    //叠加的角度差
+    _this.data.items[index].rotate += _this.data.items[index].new_rotate;
+    _this.data.items[index].angle = _this.data.items[index].rotate; //赋值
+
+    //用过移动后的坐标赋值为移动前坐标
+    _this.data.items[index].tx = e.touches[0].clientX;
+    _this.data.items[index].ty = e.touches[0].clientY;
+    /* _this.data.items[index].anglePre = _this.countDeg(
+      _this.data.items[index].x,
+      _this.data.items[index].y,
+      _this.data.items[index].tx,
+      _this.data.items[index].ty
+    ); */
+
+    _this.data.itemList = _this.data.items;
+  }
+
+  getDistancs(cx, cy, pointer_x, pointer_y) {
+    var ox = pointer_x - cx;
+    var oy = pointer_y - cy;
+    return Math.sqrt(ox * ox + oy * oy);
+  }
+
+  /*
+     *参数1和2为图片圆心坐标
+     *参数3和4为手点击的坐标
+     *返回值为手点击的坐标到圆心的角度
+     */
+  countDeg(cx, cy, pointer_x, pointer_y) {
+    var ox = pointer_x - cx;
+    var oy = pointer_y - cy;
+    var to = Math.abs(ox / oy);
+    var angle = (Math.atan(to) / (2 * Math.PI)) * 360; //Math.atan() 函数返回一个数值的反正切（以弧度为单位），Math.atan(1);  // 0.7853981633974483
+    // console.log("ox.oy:", ox, oy)
+    if (ox < 0 && oy < 0) {
+      //相对在左上角，第四象限，js中坐标系是从左上角开始的，这里的象限是正常坐标系
+      angle = -angle;
+    } else if (ox <= 0 && oy >= 0) {
+      //左下角,3象限
+      angle = -(180 - angle);
+    } else if (ox > 0 && oy < 0) {
+      //右上角，1象限
+      angle = angle;
+    } else if (ox > 0 && oy > 0) {
+      //右下角，2象限
+      angle = 180 - angle;
+    }
+    return angle;
+  }
+}
+</script>
